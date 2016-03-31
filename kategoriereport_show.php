@@ -125,13 +125,12 @@ if($getMode != 'csv')
     if($getMode == 'print')
     {
         // create html page object without the custom theme files
-        $page = new HtmlPage();
+        $page = new HtmlPage($headline);
         $page->hideThemeHtml();
         $page->hideMenu();
         $page->setPrintMode();
                 
         $page->setTitle($title);
-        $page->addHeadline($headline);
         $page->addHtml('<h3>'.$subheadline.'</h3>');
         
     	$table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
@@ -187,7 +186,7 @@ if($getMode != 'csv')
         $hoverRows = true;
 
         // create html page object
-        $page = new HtmlPage();
+        $page = new HtmlPage($headline.'<h3>'.$subheadline.'</h3>');
 
         if($getFullScreen == true)
         {
@@ -195,7 +194,6 @@ if($getMode != 'csv')
         }
 
         $page->setTitle($title);
-        $page->addHeadline($headline.'<h3>'.$subheadline.'</h3>');
         $page->addJavascript('
             $("#export_list_to").change(function () {
                 if($(this).val().length > 1) {

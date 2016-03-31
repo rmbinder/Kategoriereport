@@ -11,7 +11,7 @@
 	<text id="PKR_CONFIGURATION" development="new" translation="todo">Konfiguration</text>
 	<text id="PKR_CONFIGURATION_DEFAULT_DESC" development="new" translation="todo">Standardeinstellung der Konfigurationen</text>
   	<text id="PKR_CONFIGURATIONS" development="new" translation="todo">Konfigurationen</text>
-	<text id="PKR_CONFIGURATIONS_HEADER" development="new" translation="todo">Hier können beliebig viele Konfigurationen für den Kategoriereport erstellt werden. In der Bildschirmanzeige wird jeweils eine dieser Konfigurationen über "Konfiguration wählen..." als Grundlage für die Anzeige verwendet.	
+	<text id="PKR_CONFIGURATIONS_HEADER" development="new" translation="todo">Hier können beliebig viele Konfigurationen für den Kategoriereport erstellt werden. In der Bildschirmanzeige wird jeweils eine dieser Konfigurationen über "Konfiguration wählen..." als Grundlage für die Anzeige verwendet.</text>	
 	<text id="PKR_COLUMN_SELECTION_DESC" development="new" translation="todo">Wählen Sie die Spalten aus, die in der Liste angezeigt werden sollen.\n\n Inaktive Rollen sind mit (*) gekennzeichnet.\nUnsichtbare Rollen sind mit (!) gekennzeichnet.</text>
 	<text id="PKR_DEINST_ACTORGONLY" development="new" translation="todo">Nur Daten der aktuellen Organisation löschen.</text>
 	<text id="PKR_DEINST_ALLORG" development="new" translation="todo">Daten in allen Organisationen löschen.</text>

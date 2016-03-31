@@ -2,7 +2,7 @@
 /******************************************************************************
  * Kategoriereport
  *
- * Version 2.0.0
+ * Version 2.0.1
  *
  * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehörigkeiten eines Mitglieds.
  * 
@@ -11,8 +11,13 @@
  * Homepage     : http://www.admidio.org
  * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
  * Author		: rmb
+ *
+ * Version		  : 2.0.1
+ * Datum        : 02.11.2015
+ * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
+ * 				        - Fehler in Datei de_sie.xml behoben (</text> fehlte in einer Zeile) 
  * 
- * Version		: 2.0.0
+ * Version		  : 2.0.0
  * Datum        : 26.05.2015
  * Änderung     : - Anpassung an Admidio 3.0
  *                - Deinstallationsroutine erstellt
@@ -22,7 +27,7 @@
  *                - Menübezeichnungen angepasst (gleichlautend mit anderen Plugins) 
  *                - Nur Intern: Verwaltung der Konfigurationsdaten geändert 
  * 
- * Version		: 1.3.2
+ * Version		  : 1.3.2
  * Datum        : 17.10.2014
  * Änderung     : Für den Export sind diverse Parameter jetzt im Setup einstellbar
  * 
@@ -91,13 +96,13 @@ require_once($plugin_path. '/../adm_program/system/common.php');
 require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');
 require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
 
+// Einbinden der Sprachdatei
+$gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
+
 $pPreferences = new ConfigTablePKR();
 
 // DB auf Admidio setzen, da evtl. noch andere DBs beim User laufen
 $gDb->setCurrentDB();
-
-// Einbinden der Sprachdatei
-$gL10n->addLanguagePath($plugin_path.'/'.$plugin_folder.'/languages');
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
 // sonst wäre die Deinstallation hinfällig, da hier wieder Default-Werte der config in die DB geschrieben werden

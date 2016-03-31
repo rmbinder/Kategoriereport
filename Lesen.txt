@@ -1,4 +1,4 @@
-Kategoriereport 2.0.0
+Kategoriereport 2.0.1
 
 Dieses Plugin erzeugt eine Auflistung aller Rollenzugehörigkeiten eines Mitglieds.
 
@@ -16,7 +16,7 @@ Zur Installation sind folgende Schritte durchzuführen:
 
 1.1 Im Ordner adm_plugins einen neuen Ordner mit dem Namen kategoriereport erstellen
 
-1.2 Alle Dateien (und Ordner) des Ordners kategoriereport aus der entpackten Datei kategoriereport_2.0.0.zip in diesen Ordner kopieren.
+1.2 Alle Dateien (und Ordner) des Ordners kategoriereport aus der entpackten Datei kategoriereport....zip in diesen Ordner kopieren.
 
 1.3 In der Datei my_body_bottom.php (Ordner adm_themes/modern) folgende Zeilen einfügen:
 
@@ -55,26 +55,7 @@ Zur Installation sind folgende Schritte durchzuführen:
 
 2.3 wie unter Punkt 1.3 beschrieben
 
-2.4 * * * HINWEIS   * * *
-    Mit dieser Version werden einige Konfigurationsdaten in einem geänderten Format in der Datenbank gespeichert. 
-    Es ist leider nicht möglich alle vorhandenen Konfigurationsdaten in das neue Format zu überführen.
-    Zum Bereinigen der Datenbank sollten daher alle vorhandenen,alten Konfigurationsdaten in der Admidio-Datenbank gelöscht werden.
-
-    Dazu gibt es mehrere Möglichkeiten:
-
-    2.4.1 Entweder nach dem Start des Plugins
-          - über Einstellungen-Optionen die Deinstallationsroutine aufrufen
-
-    2.4.2 oder vor dem Start des Plugins
-          - folgendes PHP-Programm über die Adresszeile des Browsers ausführen: 
-            <Pfad der Admidio-Installation>/adm_plugins/<Name des Pluginordners von Kategoriereport>/preferences_function.php?mode=2
-            z.B. www.admidio.meinewebseite.de/adm_plugins/kategoriereport/preferences_function.php?mode=2
-
-    2.4.3 oder vor dem Start des Plugins
-           - Über phpMyAdmin in der Admidio-Datenbank die Tabelle adm_plugin_preferences suchen.
-             In dieser Tabelle alle Einträge, die mit PKR_ beginnen, löschen
-
-2.5 Admidio starten und das Plugin Kategoriereport ausführen
+2.4 Admidio starten und das Plugin Kategoriereport ausführen
 
 
 ******************************************************************************
@@ -82,6 +63,11 @@ Zur Installation sind folgende Schritte durchzuführen:
 3. Versionshistorie
 ===================
 
+ * Version      : 2.0.1
+ * Datum        : 02.11.2015
+ * Änderung     : - Fehler (verursacht durch die Methode addHeadline) behoben
+ * 		  - Fehler in Datei de_sie.xml behoben (</text> fehlte in einer Zeile) 
+ *
  * Version	: 2.0.0
  * Datum        : 26.05.2015
  * Änderung     : - Anpassung an Admidio 3.0
@@ -151,4 +137,4 @@ Zur Installation sind folgende Schritte durchzuführen:
 4. Systemanforderungen
 ======================
 
-- Admidio Version 3.0.0 oder höher
+- Admidio Version 3.0 

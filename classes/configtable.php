@@ -20,7 +20,7 @@
  * delete($deinst_org_select)	-	löscht die Konfigurationsdaten in der Datenbank
  * 
  *****************************************************************************/ 
-   	
+     	
 class ConfigTablePKR
 {
 	public	  $config		= array();     ///< Array mit allen Konfigurationsdaten

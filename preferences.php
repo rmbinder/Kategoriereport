@@ -54,7 +54,7 @@ $report = new GenReport();
 $gNavigation->addUrl(CURRENT_URL, $headline);
 
 // create html page object
-$page = new HtmlPage();
+$page = new HtmlPage($headline);
 
 // open the module configurations if a new configuration is added 
 if($getAdd)
@@ -229,9 +229,6 @@ $javascriptCode .= '
 });
 ';
 $page->addJavascript($javascriptCode, true);  
-
-// add headline and title of module
-$page->addHeadline($headline);
 
 // create module menu with back link
 $preferencesMenu = new HtmlNavbar('menu_dates_create', $headline, $page);
