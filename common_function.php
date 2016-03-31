@@ -1,15 +1,13 @@
 <?php
-/******************************************************************************
- * 
- * common_function.php
- *   
+/**
+ ***********************************************************************************************
  * Gemeinsame Funktionen fuer das Admidio-Plugin Kategoriereport
- * 
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * 
- ****************************************************************************/
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
 
 // Pfad des Plugins ermitteln
 $plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
@@ -19,8 +17,11 @@ $plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$pl
  
 require_once($plugin_path. '/../adm_program/system/common.php');
 
-// Funktion liest die Role-ID einer Rolle aus
-// $role_name - Name der zu pruefenden Rolle
+/**
+ * Funktion liest die Role-ID einer Rolle aus
+ * @param   string  $role_name Name der zu pruefenden Rolle
+ * @return  int     rol_id  Rol_id der Rolle; 0, wenn nicht gefunden
+ */
 function getRole_IDPKR($role_name)
 {
     global $gDb, $gCurrentOrganization;
@@ -33,16 +34,19 @@ function getRole_IDPKR($role_name)
                  AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  OR cat_org_id IS NULL ) ';
                       
-    $result = $gDb->query($sql);
-    $row = $gDb->fetch_object($result);
+    $statement = $gDb->query($sql);
+    $row = $statement->fetchObject();
 
    // für den seltenen Fall, dass während des Betriebes die Sprache umgeschaltet wird:  $row->rol_id prüfen
     return (isset($row->rol_id) ?  $row->rol_id : 0);
 }
 
-// Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
-// Parameter: Array mit Rollen-IDs: entweder $pPreferences->config['Pluginfreigabe']['freigabe']
-//      oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
+/**
+ * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
+ * @param   array  $array   Array mit Rollen-IDs:   entweder $pPreferences->config['Pluginfreigabe']['freigabe']
+ *                                                  oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
+ * @return  bool   $showPlugin
+ */
 function check_showpluginPKR($array)
 {
 	global $gCurrentUser;
@@ -59,10 +63,15 @@ function check_showpluginPKR($array)
     return $showPlugin;
 }
 
-// Funktion überprüft den übergebenen Namen, ob er gemaess den Namenskonventionen für
-// Profilfelder und Kategorien zum Uebersetzen durch eine Sprachdatei geeignet ist
-// Bsp: SYS_COMMON --> Rueckgabe true
-// Bsp: Mitgliedsbeitrag --> Rueckgabe false
+/**
+ * Funktion überprüft den übergebenen Namen, ob er gemaess den Namenskonventionen für
+ * Profilfelder und Kategorien zum Uebersetzen durch eine Sprachdatei geeignet ist
+ * Bsp: SYS_COMMON --> Rueckgabe true
+ * Bsp: Mitgliedsbeitrag --> Rueckgabe false
+ *
+ * @param   string  $field_name
+ * @return  bool
+ */
 function check_languagePKR($field_name)
 {
     $ret = false;
@@ -80,9 +89,14 @@ function check_languagePKR($field_name)
     return $ret;
 }
  
-// Funktion prueft, ob ein User die uebergebene Rolle besitzt
-// $role_id   - ID der zu pruefenden Rolle
-// $user_id   - ID des Users, fuer den die Mitgliedschaft geprueft werden soll
+/**
+ * Funktion prueft, ob ein User Angehöriger einer bestimmten Rolle ist
+ *
+ * @param   int  $role_id   ID der zu pruefenden Rolle
+ * @param   int  $user_id [optional]  ID des Users, fuer den die Mitgliedschaft geprueft werden soll;
+ * 										ohne Übergabe, wird für den aktuellen User geprüft
+ * @return  bool
+ */
 function hasRole_IDPKR($role_id, $user_id = 0)
 {
     global $gCurrentUser, $gDb, $gCurrentOrganization;
@@ -108,9 +122,9 @@ function hasRole_IDPKR($role_id, $user_id = 0)
                 AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                 OR cat_org_id IS NULL ) ';
                 
-    $result = $gDb->query($sql);
+    $statement = $gDb->query($sql);
 
-    $user_found = $gDb->num_rows($result);
+    $user_found = $statement->rowCount();
 
     if($user_found == 1)
     {
@@ -122,9 +136,13 @@ function hasRole_IDPKR($role_id, $user_id = 0)
     }
 }
 
-// Funktion prueft, ob ein User Angehoeriger einer Kategorie ist
-// $cat_id    - ID der zu pruefenden Kategorie
-// $user_id   - ID des Users, fuer den die Mitgliedschaft geprueft werden soll
+/**
+ * Funktion prueft, ob ein User Angehöriger einer bestimmten Kategorie ist
+ *
+ * @param   int  $cat_id    ID der zu pruefenden Kategorie
+ * @param   int  $user_id   ID des Users, fuer den die Mitgliedschaft geprueft werden soll
+ * @return  bool
+ */
 function hasCategorie_IDPKR($cat_id, $user_id = 0)
 {
     global $gCurrentUser, $gDb, $gCurrentOrganization;
@@ -150,9 +168,9 @@ function hasCategorie_IDPKR($cat_id, $user_id = 0)
                 AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                 OR cat_org_id IS NULL ) ';
                 
-    $result = $gDb->query($sql);
+    $statement = $gDb->query($sql);
 
-    $user_found = $gDb->num_rows($result);
+    $user_found = $statement->rowCount();
 
     if($user_found == 1)
     {
@@ -163,5 +181,3 @@ function hasCategorie_IDPKR($cat_id, $user_id = 0)
         return 0;
     }   
 }
- 
-?>

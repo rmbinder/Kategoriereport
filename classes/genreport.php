@@ -1,19 +1,24 @@
 <?php
+/**
+ ***********************************************************************************************
+ * Class manages the data for the report
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ ***********************************************************************************************
+ */
+
 /******************************************************************************
  * Klasse verwaltet die Daten für den Report
- *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- *
  *
  * Folgende Methoden stehen zur Verfügung:
  *
  * generate_listData()					-	perzeugt die Arrays listData und headerData für den Report
  * generate_headerSelection() 			- 	erzeugt die Auswahlliste für die Spaltenauswahl
  * isInheaderSelection($search_value)	-	liest die Konfigurationsdaten aus der Datenbank
- * 
- *****************************************************************************/ 
+ *
+ *****************************************************************************/
 
 class GenReport
 {    
@@ -21,16 +26,20 @@ class GenReport
     public	  $listData  =array();                 ///< Array mit den Daten für den Report
     public	  $headerSelection  =array();          ///< Array mit der Auswahlliste für die Spaltenauswahl
     public	  $conf;							   ///< die gewählte Konfiguration
-    
-	/** Constructor creates the object and generates the headerSelection-Array
-	 */
+
+    /**
+     * GenReport constructor
+     */
     public function __construct()
     {   	
 		// die HeaderSelection-Daten werden bei jedem Aufruf der Klasse benötigt
 		$this->generate_headerSelection();
     }
 
-    // erzeugt die Arrays listData und headerData für den Report
+    /**
+     * Erzeugt die Arrays listData und headerData für den Report
+     * @return void
+     */
 	public function generate_listData()
 	{
 		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences;
@@ -81,9 +90,9 @@ class GenReport
              				AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                				OR cat_org_id IS NULL )';
 	
-					$result = $gDb->query($sql);
+					$statement = $gDb->query($sql);
 
-					while ($row = $gDb->fetch_array($result))
+					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
@@ -96,9 +105,9 @@ class GenReport
              				AND mem_end = \'9999-12-31\'
              				AND rol_id = \''.$id.'\' ';
 	
-					$result = $gDb->query($sql);
+					$statement = $gDb->query($sql);
 
-					while ($row = $gDb->fetch_array($result))
+					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
@@ -112,9 +121,9 @@ class GenReport
              				AND rol_id = \''.$id.'\' 
              				AND mem_leader = 1 ';
 	
-					$result = $gDb->query($sql);
+					$statement = $gDb->query($sql);
 
-					while ($row = $gDb->fetch_array($result))
+					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
@@ -132,8 +141,8 @@ class GenReport
                	OR cat_org_id IS NULL )
              	AND mem_end = \'9999-12-31\' ';
 		
-		$result = $gDb->query($sql);
-		while($row = $gDb->fetch_array($result))
+		$statement = $gDb->query($sql);
+		while($row = $statement->fetch())
 		{
 			$this->listData[$row['mem_usr_id']] = array();
 		}
@@ -214,7 +223,10 @@ class GenReport
 		}
 	}	
 		
-	// erzeugt die Auswahlliste für die Spaltenauswahl
+    /**
+     * Erzeugt die Auswahlliste für die Spaltenauswahl
+     * @return void
+     */
 	private function generate_headerSelection()
 	{
 		global $gDb,  $gL10n, $gProfileFields, $gCurrentOrganization, $gCurrentUser;
@@ -241,10 +253,10 @@ class GenReport
              	AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                	OR cat.cat_org_id IS NULL )';
 	
-		$result = $gDb->query($sql);
+		$statement = $gDb->query($sql);
 
 		$k = 0;
-		while ($row = $gDb->fetch_array($result))
+		while ($row = $statement->fetch())
 		{
 			// ueberprüfen, ob der Kategoriename mittels der Sprachdatei übersetzt werden kann
         	if(check_languagePKR($row['cat_name']))
@@ -269,9 +281,9 @@ class GenReport
                 	FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
                 	WHERE cat.cat_id = \''.$data['cat_id'].'\'
                 	AND cat.cat_id = rol.rol_cat_id';
-    		$result = $gDb->query($sql);
+    		$statement = $gDb->query($sql);
     		
-        	while($row = $gDb->fetch_array($result))
+        	while($row = $statement->fetch())
         	{
         		$marker='';
         		if($row['rol_valid']==0 || $row['rol_visible']==0)
@@ -295,13 +307,17 @@ class GenReport
     	}
     	//Zusatzspalte für die Gesamtrollenübersicht erzeugen
     	$this->headerSelection[$i]['id']   		= 'adummy';          //a wie additional
-        $this->headerSelection[$i]['cat_name']	= $gL10n->get('PKR_ADDITIONAL_COLS');
-		$this->headerSelection[$i]['data']		= $gL10n->get('PKR_ROLEMEMBERSHIPS');
+        $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
+		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_ROLEMEMBERSHIPS');
 	}
 	
-	//püft, ob es den übergebenen Wert in der Spaltenauswahlliste gibt
-	// Hinweis: die Spaltenauswahlliste ist immer aktuell, da sie neu generiert wird
-	// der zu prüfende Wert könnte jedoch veraltet sein, da er aus der Konfigurationstabelle stammt
+    /**
+     * Prüft, ob es den übergebenen Wert in der Spaltenauswahlliste gibt
+     * Hinweis: die Spaltenauswahlliste ist immer aktuell, da sie neu generiert wird,
+     * der zu prüfende Wert könnte jedoch veraltet sein, da er aus der Konfigurationstabelle stammt
+     * @param 	string $search_value
+     * @return 	int
+     */
 	public function isInheaderSelection($search_value)
 	{
 		$ret = 0;
@@ -316,5 +332,3 @@ class GenReport
 		return $ret;
 	}
 }
-
-?>

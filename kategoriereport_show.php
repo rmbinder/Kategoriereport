@@ -1,16 +1,13 @@
 <?php
- /******************************************************************************
- * kategoriereport_show
+/**
+ ***********************************************************************************************
+ * Zeigt den Kategoriereport auf dem Bildschirm an
  *
- * Hauptprogramm fuer das Admidio-Plugin Kategoriereport
- *
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html  
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *   
- * Hinweis:
- * 
- * kategoriereport_show ist eine modifierte lists_show
+ * Hinweis:   kategoriereport_show ist eine modifierte lists_show
  * 
  * Parameters:
  *
@@ -18,7 +15,8 @@
  * full_screen  : 0 - (Default) show sidebar, head and page bottom of html page
  *                1 - Only show the list without any other html unnecessary elements
  * config		: Die gewählte Konfiguration (Alte Bezeichnung Fokus; die Standardeinstellung wurde über Einstellungen-Optionen festgelegt)
- *****************************************************************************/
+ ***********************************************************************************************
+ */
 
 // Pfad des Plugins ermitteln
 $plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
@@ -41,7 +39,7 @@ foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $dummy)
 {
 	$validValues[] = 'X'.$key.'X';
 }
-$getConfig 		= admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
+$getConfig      = admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
 
 $getMode        = admFuncVariableIsValid($_GET, 'mode', 'string', array('requireValue' => true, 'validValues' => array('csv-ms', 'csv-oo', 'html', 'print', 'pdf', 'pdfl' )));
 $getFullScreen  = admFuncVariableIsValid($_GET, 'full_screen', 'numeric');
@@ -52,7 +50,7 @@ $valueQuotes = '';
 $charset     = '';
 $classTable  = '';
 $orientation = '';
-$filename    = $g_organization.'-'.$gL10n->get('PKR_CATEGORY_REPORT');
+$filename    = $g_organization.'-'.$gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 
 switch ($getMode)
 {
@@ -107,8 +105,8 @@ if($numMembers == 0)
 $columnCount = count($report->headerData);
     
 // define title (html) and headline
-$title = $gL10n->get('PKR_CATEGORY_REPORT');
-$headline = $gL10n->get('PKR_CATEGORY_REPORT');
+$title = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
+$headline = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 $subheadline = $pPreferences->config['Konfigurationen']['col_desc'][trim($getConfig,'X')];    
 
 // if html mode and last url was not a list view then save this url to navigation stack
@@ -137,9 +135,9 @@ if($getMode != 'csv')
     }
     elseif($getMode == 'pdf')
     {
-    	if(ini_get('max_execution_time')<300)
+    	if(ini_get('max_execution_time')<600)
     	{
-    		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+    		ini_set('max_execution_time', 600); //600 seconds = 10 minutes
     	}
         require_once(SERVER_PATH. '/adm_program/libs/tcpdf/tcpdf.php');
         $pdf = new TCPDF($orientation, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -234,7 +232,7 @@ if($getMode != 'csv')
                                   'pdfl' => $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_LANDSCAPE').')', 'csv-oo' => $gL10n->get('SYS_CSV').' ('.$gL10n->get('SYS_UTF8').')');
         $form->addSelectBox('export_list_to', null, $selectBoxEntries, array('showContextDependentFirstEntry' => false));
         
-        $selectBoxEntries = array(' ' => $gL10n->get('PKR_SELECT_CONFIGURATION').' ...');
+        $selectBoxEntries = array(' ' => $gL10n->get('PLG_KATEGORIEREPORT_SELECT_CONFIGURATION').' ...');
     	foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $item)
     	{
 			$selectBoxEntries['X'.$key.'X'] =  $item;
@@ -247,7 +245,7 @@ if($getMode != 'csv')
 		{
     		// show link to pluginpreferences 
     		$listsMenu->addItem('admMenuItemPreferencesLists', $g_root_path. '/adm_plugins/'.$plugin_folder.'/preferences.php', 
-                        $gL10n->get('PKR_SETTINGS'), 'options.png', 'right');        
+                        $gL10n->get('PLG_KATEGORIEREPORT_SETTINGS'), 'options.png', 'right');        
 		}
         
     	$table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
@@ -460,4 +458,3 @@ elseif($getMode == 'html' || $getMode == 'print')
     // show complete html page
     $page->show();
 }
-?>

@@ -1,25 +1,24 @@
 <?php
-/******************************************************************************
- * 
- * configdata.php
- *   
+/**
+ ***********************************************************************************************
  * Konfigurationsdaten fuer das Admidio-Plugin Kategoriereport
- * 
- * Copyright    : (c) 2004 - 2015 The Admidio Team
- * Homepage     : http://www.admidio.org
- * License      : GNU Public License 2 http://www.gnu.org/licenses/gpl-2.0.html
- * 
- ****************************************************************************/
+ *
+ * @copyright 2004-2016 The Admidio Team
+ * @see http://www.admidio.org/
+ * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
+ *
+ ***********************************************************************************************
+ */
 
 global $gL10n, $gProfileFields;
 
 //Standardwerte einer Neuinstallation oder beim Anfügen einer zusätzlichen Konfiguration
 $config_default['Pluginfreigabe']['freigabe'] = array(	getRole_IDPKR($gL10n->get('SYS_WEBMASTER')),
-													   getRole_IDPKR($gL10n->get('SYS_MEMBER')));    		
+													    getRole_IDPKR($gL10n->get('SYS_MEMBER')));
 $config_default['Pluginfreigabe']['freigabe_config'] = array(	getRole_IDPKR($gL10n->get('SYS_WEBMASTER')),
-															getRole_IDPKR($gL10n->get('SYS_MEMBER')));    		 		   		
+															    getRole_IDPKR($gL10n->get('SYS_MEMBER')));
 
-$config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('PKR_PATTERN')),
+$config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('PLG_KATEGORIEREPORT_PATTERN')),
 											'col_fields' 	=> array(	'p'.$gProfileFields->getProperty('FIRST_NAME', 'usf_id').','.
 																		'p'.$gProfileFields->getProperty('LAST_NAME', 'usf_id').','.
 																		'p'.$gProfileFields->getProperty('ADDRESS', 'usf_id').','.
@@ -45,5 +44,3 @@ $config_default['Plugininformationen']['stand'] = '';
  *  Bereits gespeicherte Werte in der Datenbank können nach einer Änderung nicht mehr eingelesen werden!
  */
 $dbtoken  = '#_#';  
-
-?>
