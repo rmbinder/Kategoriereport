@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language id="de">
+<version id="2.0.0" translator="Rainer Binder">
+	<text id="PKR_ADD_ANOTHER_CONFIG" development="new" translation="todo">Weitere Konfiguration hinzufügen</text>
+	<text id="PKR_ADDITIONAL_COLS" development="new" translation="todo">Zusätzliche Spalten</text>
+	<text id="PKR_CAT_SELECTION" development="new" translation="todo">Kategoriewahl</text>
+	<text id="PKR_CAT_SELECTION_CONF_DESC" development="new" translation="todo">Über Kategoriewahl kann eine Konfiguration auf die Angehörigen von Rollen der gewählten Kategorien eingeschränkt werden.\n\n Soll keine Einschränkung erfolgen, so sind beide Felder (Rollenwahl und Kategoriewahl) leer zu lassen.</text>
+	<text id="PKR_COLUMN" development="new" translation="todo">Spalte</text>
+	<text id="PKR_COL_DESC" development="new" translation="todo">Bezeichnung</text>
+	<text id="PKR_COL_DESC_DESC" development="new" translation="todo">Die hier eingetragende Bezeichnung erscheint in der Bildschirmanzeige im Auswahlmenü "Konfiguration wählen...".\n\nEine Konfiguration kann gelöscht werden, indem der Inhalt des Feldes Bezeichnung gelöscht wird.</text>
+	<text id="PKR_CONFIGURATION" development="new" translation="todo">Konfiguration</text>
+	<text id="PKR_CONFIGURATION_DEFAULT_DESC" development="new" translation="todo">Standardeinstellung der Konfigurationen</text>
+	<text id="PKR_CONFIGURATIONS" development="new" translation="todo">Konfigurationen</text>
+	<text id="PKR_CONFIGURATIONS_HEADER" development="new" translation="todo">Hier können beliebig viele Konfigurationen für den Kategoriereport erstellt werden. In der Bildschirmanzeige wird jeweils eine dieser Konfigurationen über "Konfiguration wählen..." als Grundlage für die Anzeige verwendet.</text>
+	<text id="PKR_COLUMN_SELECTION_DESC" development="new" translation="todo">Wähle die Spalten aus, die in der Liste angezeigt werden sollen.\n\n Inaktive Rollen sind mit (*) gekennzeichnet.\nUnsichtbare Rollen sind mit (!) gekennzeichnet.</text>
+	<text id="PKR_DEINST_ACTORGONLY" development="new" translation="todo">Nur Daten der aktuellen Organisation löschen.</text>
+	<text id="PKR_DEINST_ALLORG" development="new" translation="todo">Daten in allen Organisationen löschen.</text>
+	<text id="PKR_DEINST_DATA_DELETE_ERROR" development="new" translation="todo">- Beim Löschen der Daten ist ein Fehler aufgetreten.\n</text>
+	<text id="PKR_DEINST_DATA_DELETE_SUCCESS" development="new" translation="todo">- Die vom Plugin angelegten Daten wurden gelöscht.\n</text>
+	<text id="PKR_DEINST_ENDMESSAGE" development="new" translation="todo">\nUm das Plugin vollständig zu entfernen, muss jetzt der Browser geschlossen und die Programmdateien und der Link im Menü entfernt werden. Der Button "Weiter" initialisert das Plugin neu mit Standardwerten.</text>
+	<text id="PKR_DEINST_STARTMESSAGE" development="new" translation="todo">Folgende Löschvorgänge wurden durchgeführt:\n\n</text>
+	<text id="PKR_DEINST_TABLE_DELETE_ERROR" development="new" translation="todo">- Die Tabelle "adm_plugin_preferences" konnte nicht gelöscht werden, da sich darin noch Daten eines anderen Plugins befinden.\n</text>
+	<text id="PKR_DEINST_TABLE_DELETE_SUCCESS" development="new" translation="todo">- Die vom Plugin angelegte Tabelle "adm_plugin_preferences" wurde gelöscht.\n</text>
+	<text id="PKR_DEINSTALLATION" development="new" translation="todo">Deinstallation</text>
+	<text id="PKR_DEINSTALLATION_DESC" development="new" translation="todo">Über die Deinstallation können vom Plugin erzeugte Einträge in der Datenbank gelöscht werden.</text>
+	<text id="PKR_DEINSTALLATION_FORM_DESC" development="new" translation="todo">Wähle den Installationsumfang aus.\n\n***ACHTUNG: Diese Routine löscht nur Einträge in der Admidio-Datenbank. Programmdateien und der Link im Menü werden nicht gelöscht! ***</text>
+	<text id="PKR_DISPLAY_TEXT_MEMBERSHIP_NO_DESC" development="changed" translation="todo">Text bei keiner Mitgliedschaft in einer Rolle oder Kategorie. \n(z.B. Nein oder False).</text>
+	<text id="PKR_DISPLAY_TEXT_MEMBERSHIP_YES_DESC" development="changed" translation="todo">Text bei Mitgliedschaft in einer Rolle oder Kategorie. \n(z.B. Ja oder True oder X).</text>
+	<text id="PKR_DISPLAY_TEXT_MEMBERSHIP_NO" development="new" translation="todo">Anzeigetext bei keiner Mitgliedschaft</text>
+	<text id="PKR_DISPLAY_TEXT_MEMBERSHIP_YES" development="new" translation="todo">Anzeigetext bei Mitgliedschaft</text>
+	<text id="PKR_DOCUMENTATION" development="new" translation="todo">Dokumentation</text>
+	<text id="PKR_DOCUMENTATION_OPEN" development="new" translation="todo">Dokumentation öffnen</text>
+	<text id="PKR_DOCUMENTATION_OPEN_DESC" development="new" translation="todo">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</text>
+	<text id="PKR_ERROR_MIN_CONFIG" development="new" translation="todo">FEHLER: Mindestens eine Konfiguration muss vorhanden sein!</text>
+	<text id="PKR_LINK_TO_DEINSTALLATION" development="new" translation="todo">Zur Deinstallation wechseln</text>
+	<text id="PKR_ORG_CHOICE" development="new" translation="todo">Organisationswahl</text>
+	<text id="PKR_PATTERN" development="new" translation="todo">Beispielkonfiguration</text>
+	<text id="PKR_ROLEMEMBERSHIPS" development="new" translation="todo">Rollenmitgliedschaften</text>
+    <text id="PKR_ROLE_SELECTION" development="new" translation="todo">Rollenwahl</text>
+	<text id="PKR_ROLE_SELECTION_CONF_DESC" development="new" translation="todo">Über Rollenwahl kann eine Konfiguration auf die Angehörigen der gewählten Rollen eingeschränkt werden.\n\n Soll keine Einschränkung erfolgen, so sind beide Felder (Rollenwahl und Kategoriewahl) leer zu lassen.</text>
+	<text id="PKR_ROLE_SELECTION_DESC" development="changed" translation="todo">Wähle die Rollen aus, deren Mitglieder das Plugin aufrufen dürfen.</text>
+	<text id="PKR_ROLE_SELECTION_DESC2" development="changed" translation="todo">Wähle die Rollen aus, deren Mitglieder die Einstellungen des Plugins aufrufen dürfen.</text>
+    <text id="PKR_SELECT_CONFIGURATION" development="new" translation="todo">Konfiguration wählen</text>
+</version>
+<version id="1.2.1" translator="Rainer M. Binder">
+	<!-- System-Phrases for use in every module -->
+	<text id="PKR_CATEGORY_REPORT" development="new" translation="todo">Kategoriereport</text>
+	<text id="PKR_SETTINGS" development="new" translation="todo">Einstellungen</text>
+	
+	<!-- Phrases for column control -->
+	<text id="PKR_COLUMNS" development="new" translation="todo">Spalten</text>
+	<text id="PKR_COLUMN_SELECTION" development="new" translation="todo">Spaltenauswahl</text>
+	
+	<!-- Phrases for options -->
+	<text id="PKR_OPTIONS" development="new" translation="todo">Optionen</text>
+  
+    <!-- Phrases for plugin control -->
+    <text id="PKR_PLUGIN_CONTROL" development="new" translation="todo">Pluginfreigabe</text>
+    <text id="PKR_ROLE_SELECTION" development="new" translation="todo">Rollenauswahl</text>
+  
+    <!-- Phrases for plugin information -->
+    <text id="PKR_PLUGIN_DATE" development="new" translation="todo">Stand</text>
+    <text id="PKR_PLUGIN_INFORMATION" development="new" translation="todo">Plugininformationen</text>
+    <text id="PKR_PLUGIN_NAME" development="new" translation="todo">Name des Plugins</text>
+    <text id="PKR_PLUGIN_VERSION" development="new" translation="todo">Version</text>
+</version>
+</language>
