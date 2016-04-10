@@ -36,6 +36,9 @@
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
     <string name="PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG">FEHLER: Mindestens eine Konfiguration muss vorhanden sein!</string>
     <string name="PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION">Zur Deinstallation wechseln</string>
+    <string name="PLG_KATEGORIEREPORT_NUMBER_COL">Anzahl (Spalte)</string> 
+    <string name="PLG_KATEGORIEREPORT_NUMBER_COL_DESC">Soll am Ende des Reports eine Zeile mit der Anzahl der Mitgliedschaften angezeigt werden, so ist der Haken zu setzen.</string>
+    <string name="PLG_KATEGORIEREPORT_NUMBER_ROW">Anzahl (Zeile)</string>       
     <string name="PLG_KATEGORIEREPORT_OPTIONS">Optionen</string>
     <string name="PLG_KATEGORIEREPORT_ORG_CHOICE">Organisationswahl</string>
     <string name="PLG_KATEGORIEREPORT_PATTERN">Beispielkonfiguration</string>
@@ -50,5 +53,5 @@
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC">Wählen Sie die Rollen aus, deren Mitglieder das Plugin aufrufen dürfen.</string>
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC2">Wählen Sie die Rollen aus, deren Mitglieder die Einstellungen des Plugins aufrufen dürfen.</string>
     <string name="PLG_KATEGORIEREPORT_SELECT_CONFIGURATION">Konfiguration wählen</string>
-    <string name="PLG_KATEGORIEREPORT_SETTINGS">Einstellungen</string>
+    <string name="PLG_KATEGORIEREPORT_SETTINGS">Einstellungen</string>    
 </resources>

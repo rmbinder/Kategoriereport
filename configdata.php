@@ -26,7 +26,8 @@ $config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('P
 											'col_yes'		=> array('ja'),
 											'col_no'		=> array('nein'),
  											'selection_role'=> array(' '),
-											'selection_cat'	=> array(' ')  );
+											'selection_cat'	=> array(' '),
+											'number_col'	=> array(0)  );
 															
 $config_default['Optionen']['config_default'] = 0; 
 															

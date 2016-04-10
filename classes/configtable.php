@@ -101,12 +101,25 @@ class ConfigTablePKR
     
 		$this->read();
 	
+		// Updateroutine 2.1.0 -> 2.1.1
+   		if (isset($this->config['Konfigurationen']['col_desc']))
+    	{
+			foreach ($this->config['Konfigurationen']['col_desc'] as $key => $dummy)
+			{
+				if (!isset($this->config['Konfigurationen']['number_col'][$key]))
+    			{
+					$this->config['Konfigurationen']['number_col'][$key] = 0;
+    			}
+			}
+		} 
+		// Ende Updateroutine 2.1.0 -> 2.1.1		
+		
 		$this->config['Plugininformationen']['version'] = self::$version;
 		$this->config['Plugininformationen']['stand'] = self::$stand;
 	
 		// die eingelesenen Konfigurationsdaten in ein Arbeitsarray kopieren
 		$config_ist = $this->config;
-	
+
 		// die Default-config durchlaufen
 		foreach($this->config_default as $section => $sectiondata)
     	{

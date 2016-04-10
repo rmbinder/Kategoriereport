@@ -69,7 +69,8 @@ case 1:
     				$pPreferences->config['Konfigurationen']['col_no'][] = $_POST['col_no'. $conf];
     				$pPreferences->config['Konfigurationen']['selection_role'][] = isset($_POST['selection_role'. $conf]) ? trim(implode(',',$_POST['selection_role'. $conf]),',') : ' ';
     				$pPreferences->config['Konfigurationen']['selection_cat'][] = isset($_POST['selection_cat'. $conf]) ? trim(implode(',',$_POST['selection_cat'. $conf]),',') : ' ';
-    				
+    				$pPreferences->config['Konfigurationen']['number_col'][] = isset($_POST['number_col'. $conf]) ? 1 : 0 ;
+
     				$allColumnsEmpty = true;
 
     				$fields = '';

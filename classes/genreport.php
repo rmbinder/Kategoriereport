@@ -42,9 +42,11 @@ class GenReport
      */
 	public function generate_listData()
 	{
-		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences;
+		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences,$gL10n;
 		
 		$workarray = array();
+		$number_row_pos = -1;
+		$number_col = array();		
 		
 		$colfields=explode(',',$pPreferences->config['Konfigurationen']['col_fields'][$this->conf]);
 		// die gespeicherten Konfigurationen durchlaufen
@@ -77,6 +79,7 @@ class GenReport
         		case 'p':                    //p=profileField
         			// nur bei Profilfeldern wird 'id' mit der 'usf_id' überschrieben
         			$this->headerData[$key+1]['id'] = $id;
+        			$number_col[$key+1] = '';
         			break;
         		case 'c':                    //c=categorie
         			
@@ -89,13 +92,13 @@ class GenReport
              				AND cat_id = \''.$id.'\'
              				AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                				OR cat_org_id IS NULL )';
-	
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
+					$number_col[$key+1] = 0;
         			break;
         		case 'r':                    //r=role
 
@@ -104,13 +107,13 @@ class GenReport
              				WHERE mem_rol_id = rol_id
              				AND mem_end = \'9999-12-31\'
              				AND rol_id = \''.$id.'\' ';
-	
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
+					$number_col[$key+1] = 0;
         			break;
         		case 'l':                    //l=leader
         			
@@ -120,17 +123,30 @@ class GenReport
              				AND mem_end = \'9999-12-31\'
              				AND rol_id = \''.$id.'\' 
              				AND mem_leader = 1 ';
-	
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
 					{
 						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
 					}
+					$number_col[$key+1] = 0;
+        			break;
+				case 'n':                    //n=number
+        			// eine oder mehrere Zählspalten wurden definiert
+        			// die Position der letzten Spalte zwischenspeichern
+        			// Werte werden aber nur in der letzten Zählspalte angezeigt
+        			// alles andere ist Unsinn (warum soll derselbe Wert mehrfach angezeigt werden)
+        			$number_row_pos = $key+1;
+        			$number_col[$key+1] = '';
+        			break;
+        		case 'a':                    //a=additional
+        			$number_col[$key+1] = '';
         			break;
         	}
         }  
 
+        $number_col[1] = $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL');
+        
 		// alle Mitglieder der aktuellen Organisation einlesen
 		$sql = ' SELECT mem_usr_id
              	FROM '.TBL_MEMBERS.' , '.TBL_ROLES.' , '. TBL_CATEGORIES. ' 
@@ -153,6 +169,7 @@ class GenReport
     	foreach ($this->listData as $member => $dummy)
 		{     	
 			$user->readDataById($member);
+			$number_row_count = 0;
 	   		
 			// bestehen Rollen- und/oder Kategorieeinschränkungen?
         	$rolecatmarker = true;
@@ -208,11 +225,17 @@ class GenReport
 					}
 					$this->listData[$member][$key] = trim($this->listData[$member][$key],'; ');
 				}
+				elseif($data['type']=='n')              //Sonderfall: Anzahlspalte
+				{
+					$this->listData[$member][$key] = '';
+				}
 				else 
 				{
 					if(isset($data['usr_id']) AND  in_array($member,$data['usr_id']))
                 	{
                     	$this->listData[$member][$key] = $pPreferences->config['Konfigurationen']['col_yes'][$this->conf];
+                    	$number_row_count++;
+                    	$number_col[$key]++;
             		}
                 	else
                 	{
@@ -220,6 +243,15 @@ class GenReport
                 	}
 				}
 			}
+			if($number_row_pos>-1)
+			{
+				$this->listData[$member][$number_row_pos]=$number_row_count;
+			}
+		}
+
+		if ($pPreferences->config['Konfigurationen']['number_col'][$this->conf]==1)
+		{
+			$this->listData[max(array_keys($this->listData))+1] = $number_col;
 		}
 	}	
 		
@@ -309,6 +341,12 @@ class GenReport
     	$this->headerSelection[$i]['id']   		= 'adummy';          //a wie additional
         $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
 		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_ROLEMEMBERSHIPS');
+		$i++;
+		
+		//Zusatzspalte für die Anzahl erzeugen
+    	$this->headerSelection[$i]['id']   		= 'ndummy';          //n wie number 
+        $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
+		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_ROW');
 	}
 	
     /**

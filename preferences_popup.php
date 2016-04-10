@@ -39,6 +39,8 @@ echo '
 	'.$gL10n->get('PLG_KATEGORIEREPORT_DISPLAY_TEXT_MEMBERSHIP_NO_DESC').'<br><br>
     <strong>'.$gL10n->get('PLG_KATEGORIEREPORT_ROLE_SELECTION').'</strong><br>
 	'.$gL10n->get('PLG_KATEGORIEREPORT_ROLE_SELECTION_CONF_DESC').'<br><br>
-    <strong>'.$gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION').'</strong><br>
-	'.$gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION_CONF_DESC').'
+	<strong>'.$gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION').'</strong><br>
+	'.$gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION_CONF_DESC').'<br><br>	
+    <strong>'.$gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL').'</strong><br>
+	'.$gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL_DESC').'
 </div>';
