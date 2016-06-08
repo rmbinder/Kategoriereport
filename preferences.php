@@ -35,6 +35,13 @@ $getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' =
 $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
 
+// only authorized user are allowed to start this module
+if(!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 $headline = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 
 $num_configs	 = count($pPreferences->config['Konfigurationen']['col_desc']);

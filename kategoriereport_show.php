@@ -33,6 +33,13 @@ require_once($plugin_path. '/'.$plugin_folder.'/classes/genreport.php');
 $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
 
+// only authorized user are allowed to start this module
+if(!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe']))
+{
+	$gMessage->setForwardUrl($gHomepage, 3000);
+    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 // Initialize and check the parameters
 $validValues = array();
 foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $dummy)
