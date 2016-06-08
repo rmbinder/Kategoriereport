@@ -115,6 +115,22 @@ class GenReport
 					}
 					$number_col[$key+1] = 0;
         			break;
+        		case 'w':                    //w=without (Leader)
+
+        			$sql = 'SELECT mem_usr_id
+             				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
+             				WHERE mem_rol_id = rol_id
+             				AND mem_end = \'9999-12-31\'
+             				AND rol_id = \''.$id.'\' 
+             				AND mem_leader = 0 ';
+					$statement = $gDb->query($sql);
+
+					while ($row = $statement->fetch())
+					{
+						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
+					}
+					$number_col[$key+1] = 0;
+        			break;        			
         		case 'l':                    //l=leader
         			
         			$sql = 'SELECT mem_usr_id
@@ -326,12 +342,17 @@ class GenReport
         			$marker .= ')';
         		}
         			
-        		$this->headerSelection[$i]['id']   		= 'r'.$row['rol_id'];
+        		$this->headerSelection[$i]['id']   		= 'r'.$row['rol_id'];       //r wie role
         		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
 				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_ROLE').': '.$row['rol_name'].$marker;
 				$i++;
+				
+       			$this->headerSelection[$i]['id']   		= 'w'.$row['rol_id'];		//w wie without (Leader)
+        		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
+				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_ROLE').' '.$gL10n->get('PLG_KATEGORIEREPORT_WITHOUT').' '.$gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
+				$i++;				
         		
-				$this->headerSelection[$i]['id']   		= 'l'.$row['rol_id'];
+				$this->headerSelection[$i]['id']   		= 'l'.$row['rol_id'];		//l wie leader
         		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
 				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
 				$i++;

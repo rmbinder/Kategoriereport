@@ -53,5 +53,6 @@
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC">Wählen Sie die Rollen aus, deren Mitglieder das Plugin aufrufen dürfen.</string>
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC2">Wählen Sie die Rollen aus, deren Mitglieder die Einstellungen des Plugins aufrufen dürfen.</string>
     <string name="PLG_KATEGORIEREPORT_SELECT_CONFIGURATION">Konfiguration wählen</string>
-    <string name="PLG_KATEGORIEREPORT_SETTINGS">Einstellungen</string>    
+    <string name="PLG_KATEGORIEREPORT_SETTINGS">Einstellungen</string> 
+    <string name="PLG_KATEGORIEREPORT_WITHOUT">ohne</string>       
 </resources>

@@ -53,5 +53,6 @@
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC">Choose from the rollers, whose members may call the plugin.</string>
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC2">Choose from the rollers, whose members may access the settings of the plugin.</string>
     <string name="PLG_KATEGORIEREPORT_SELECT_CONFIGURATION">Configuration selection</string>
-    <string name="PLG_KATEGORIEREPORT_SETTINGS">Settings</string>   
+    <string name="PLG_KATEGORIEREPORT_SETTINGS">Settings</string>
+    <string name="PLG_KATEGORIEREPORT_WITHOUT">without</string>       
 </resources>
