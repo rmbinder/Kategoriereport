@@ -66,7 +66,7 @@ class GenReport
             
         	//$data splitten in Typ und ID
         	$type=substr($data,0,1);
-        	$id=substr($data,1);
+        	$id=(int) substr($data,1);
         	
         	$workarray[$key+1]['type']=$type;
         	$workarray[$key+1]['id']=$id;
