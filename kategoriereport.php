@@ -3,13 +3,13 @@
  ***********************************************************************************************
  * Kategoriereport
  *
- * Version 2.1.1-Beta
+ * Version 2.2.0
  *
  * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehörigkeiten eines Mitglieds.
  * 
  * Author: rmb
  *
- * Compatible with Admidio version 3.1
+ * Compatible with Admidio version 3.2
  *
  * @copyright 2004-2016 The Admidio Team
  * @see http://www.admidio.org/
@@ -55,13 +55,13 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 		{
 			// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, 
 			// dann innerhalb dieses Menüs anzeigen
-			$pluginMenu->addItem('categoryreport_show', '/adm_plugins/'.$plugin_folder.'/kategoriereport_show.php?mode=html',
+			$pluginMenu->addItem('categoryreport_show', FOLDER_PLUGINS .'/'.$plugin_folder.'/kategoriereport_show.php?mode=html',
 				$gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT'), '/icons/lists.png'); 
 		}
 		else 
 		{
 			// wenn nicht, dann innerhalb des (immer vorhandenen) Module-Menus anzeigen
-			$moduleMenu->addItem('categoryreport_show', '/adm_plugins/'.$plugin_folder.'/kategoriereport_show.php?mode=html',
+			$moduleMenu->addItem('categoryreport_show', FOLDER_PLUGINS .'/'.$plugin_folder.'/kategoriereport_show.php?mode=html',
 				$gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT'), '/icons/lists.png'); 
 		}
 	}
