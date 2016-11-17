@@ -18,16 +18,10 @@
  ***********************************************************************************************
  */
 
-// Pfad des Plugins ermitteln
-$plugin_folder_pos = strpos(__FILE__, 'adm_plugins') + 11;
-$plugin_file_pos   = strpos(__FILE__, basename(__FILE__));
-$plugin_path       = substr(__FILE__, 0, $plugin_folder_pos);
-$plugin_folder     = substr(__FILE__, $plugin_folder_pos+1, $plugin_file_pos-$plugin_folder_pos-2);
-
-require_once($plugin_path. '/../adm_program/system/common.php');
-require_once($plugin_path. '/'.$plugin_folder.'/common_function.php');  
-require_once($plugin_path. '/'.$plugin_folder.'/classes/configtable.php'); 
-require_once($plugin_path. '/'.$plugin_folder.'/classes/genreport.php'); 
+require_once(__DIR__ . '/../../adm_program/system/common.php');
+require_once(__DIR__ . '/common_function.php');
+require_once(__DIR__ . '/classes/configtable.php');
+require_once(__DIR__ . '/classes/genreport.php');
 
 // Konfiguration einlesen          
 $pPreferences = new ConfigTablePKR();
@@ -202,18 +196,18 @@ if($getMode != 'csv')
         $page->addJavascript('
             $("#export_list_to").change(function () {
                 if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/kategoriereport_show.php?" +
+                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?" +
                         "config='.$getConfig.'&mode=" + $(this).val();
                 }
             });
             $("#configList").change(function () {
             	if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/kategoriereport_show.php?" +
+                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?" +
                         "mode=html&full_screen='.$getFullScreen.'&config=" + $(this).val();
                 }
             });            
             $("#menu_item_print_view").click(function () {
-                window.open("'. ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/kategoriereport_show.php?" +
+                window.open("'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?" +
                  "config='.$getConfig.'&mode=print", "_blank");
             });', true);
 
@@ -222,12 +216,12 @@ if($getMode != 'csv')
         
         if($getFullScreen == true)
         {
-            $listsMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/kategoriereport_show.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=0',
+            $listsMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=0',
                 $gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
         }
         else
         {
-            $listsMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/kategoriereport_show.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=1',
+            $listsMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=1',
                 $gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
         }
         
@@ -251,7 +245,7 @@ if($getMode != 'csv')
         if(check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 		{
     		// show link to pluginpreferences 
-    		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . '/'.$plugin_folder.'/preferences.php',
+    		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
                         $gL10n->get('PLG_KATEGORIEREPORT_SETTINGS'), 'options.png', 'right');        
 		}
         
