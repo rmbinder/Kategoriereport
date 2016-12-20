@@ -5,7 +5,7 @@
  *
  * Version 2.2.0
  *
- * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehörigkeiten eines Mitglieds.
+ * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehoerigkeiten eines Mitglieds.
  * 
  * Author: rmb
  *
@@ -17,7 +17,7 @@
  ***********************************************************************************************
  */
 
-//$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Fällen nicht immer sichtbar
+//$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Faellen nicht immer sichtbar
 global $gNavigation;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
@@ -30,7 +30,7 @@ $gL10n->addLanguagePath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/langu
 $pPreferences = new ConfigTablePKR();
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
-// sonst wäre die Deinstallation hinfällig, da hier wieder Default-Werte der config in die DB geschrieben werden
+// sonst waere die Deinstallation hinfaellig, da hier wieder Default-Werte der config in die DB geschrieben werden
 if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false)
 {
 	if ($pPreferences->checkforupdate())

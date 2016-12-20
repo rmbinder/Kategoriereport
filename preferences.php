@@ -150,7 +150,7 @@ $javascriptCode = '
             	var selected = "";
             
             	// bei gespeicherten Listen das entsprechende Profilfeld selektieren
-            	// und den Feldnamen dem Listenarray hinzufügen
+            	// und den Feldnamen dem Listenarray hinzufuegen
             	if(arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.'])
             	{
                 	if(arr_user_fields[counter]["id"] == arr_default_fields'.$conf.'[fieldNumberIntern'.$conf.']["id"])
@@ -173,21 +173,19 @@ $javascriptCode = '
         	var default_fields = new Array(); ';
     		$fields = explode(',',$pPreferences->config['Konfigurationen']['col_fields'][$conf]);
     		for($number = 0; $number < count($fields); $number++)
-           	// for($number = 0; $number < count($pPreferences->config['Spalten']['freigabe']); $number++)
-            	{          	
-            		// das ist nur zur Überprüfung, ob diese Freigabe noch existent ist
-            		// es könnte u.U. ja sein, daß ein Profilfeld oder eine Rolle seit der letzten Speicherung gelöscht wurde
-            		//$found = $report->isInHeaderSelection($pPreferences->config['Spalten']['freigabe'][$number]);
-            		$found = $report->isInHeaderSelection($fields[$number]);
-            		if($found>0)
-            		{
-            			$javascriptCode .= '
-                		default_fields['. $number. '] 		   = new Object();
-                		default_fields['. $number. ']["id"]    = "'. $report->headerSelection[$found]["id"]. '";
-                		default_fields['. $number. ']["data"]  = "'. $report->headerSelection[$found]["data"]. '";
-                		';
-            		}
+            {          	
+            	// das ist nur zur Überprüfung, ob diese Freigabe noch existent ist
+            	// es koennte u.U. ja sein, dass ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
+            	$found = $report->isInHeaderSelection($fields[$number]);
+            	if($found>0)
+            	{
+            		$javascriptCode .= '
+                	default_fields['. $number. '] 		   = new Object();
+                	default_fields['. $number. ']["id"]    = "'. $report->headerSelection[$found]["id"]. '";
+                	default_fields['. $number. ']["data"]  = "'. $report->headerSelection[$found]["data"]. '";
+                	';
             	}
+           	}
         	$javascriptCode .= '
         	return default_fields;
     	}    

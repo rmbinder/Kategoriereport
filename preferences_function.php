@@ -92,13 +92,13 @@ case 1:
 					$pPreferences->config['Konfigurationen']['col_fields'][] = substr($fields,0,-1);
     			}	
     				
-    			// die Standardeinstellung der Konfigurationen darf nicht größer sein, als die max. Anzahl der Konfigurationen
+    			// die Standardeinstellung der Konfigurationen darf nicht groesser sein als die max. Anzahl der Konfigurationen
     			if($pPreferences->config['Optionen']['config_default']>$konf_neu-1)
     			{
     				$pPreferences->config['Optionen']['config_default']=$konf_neu-1;
     			}
     			
-    			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen gelöscht (was nicht sein darf)
+    			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
     			if($konf_neu==0)
     			{
     				$gMessage->show($gL10n->get('PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG'));

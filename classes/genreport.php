@@ -12,7 +12,7 @@
 /******************************************************************************
  * Klasse verwaltet die Daten für den Report
  *
- * Folgende Methoden stehen zur Verfügung:
+ * Folgende Methoden stehen zur Verfuegung:
  *
  * generate_listData()					-	perzeugt die Arrays listData und headerData für den Report
  * generate_headerSelection() 			- 	erzeugt die Auswahlliste für die Spaltenauswahl
@@ -22,17 +22,17 @@
 
 class GenReport
 {    
-    public	  $headerData = array();               ///< Array mit allen Spaltenüberschriften
+    public	  $headerData = array();               ///< Array mit allen Spaltenueberschriften
     public	  $listData  =array();                 ///< Array mit den Daten für den Report
     public	  $headerSelection  =array();          ///< Array mit der Auswahlliste für die Spaltenauswahl
-    public	  $conf;							   ///< die gewählte Konfiguration
+    public	  $conf;							   ///< die gewaehlte Konfiguration
 
     /**
      * GenReport constructor
      */
     public function __construct()
     {   	
-		// die HeaderSelection-Daten werden bei jedem Aufruf der Klasse benötigt
+		// die HeaderSelection-Daten werden bei jedem Aufruf der Klasse benoetigt
 		$this->generate_headerSelection();
     }
 
@@ -52,8 +52,8 @@ class GenReport
 		// die gespeicherten Konfigurationen durchlaufen
 		foreach($colfields as $key => $data)
         {
-        	// das ist nur zur Überprüfung, ob diese Freigabe noch existent ist
-            // es könnte u.U. ja sein, daß ein Profilfeld oder eine Rolle seit der letzten Speicherung gelöscht wurde
+        	// das ist nur zur Ueberpruefung, ob diese Freigabe noch existent ist
+            // es koennte u.U. ja sein, daß ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
         	$found = $this->isInHeaderSelection($data);
             if($found==0)
             {
@@ -77,7 +77,7 @@ class GenReport
         	switch($type)
         	{
         		case 'p':                    //p=profileField
-        			// nur bei Profilfeldern wird 'id' mit der 'usf_id' überschrieben
+        			// nur bei Profilfeldern wird 'id' mit der 'usf_id' ueberschrieben
         			$this->headerData[$key+1]['id'] = $id;
         			$number_col[$key+1] = '';
         			break;
@@ -150,7 +150,7 @@ class GenReport
 				case 'n':                    //n=number
         			// eine oder mehrere Zählspalten wurden definiert
         			// die Position der letzten Spalte zwischenspeichern
-        			// Werte werden aber nur in der letzten Zählspalte angezeigt
+        			// Werte werden aber nur in der letzten Zaehlspalte angezeigt
         			// alles andere ist Unsinn (warum soll derselbe Wert mehrfach angezeigt werden)
         			$number_row_pos = $key+1;
         			$number_col[$key+1] = '';
@@ -187,7 +187,7 @@ class GenReport
 			$user->readDataById($member);
 			$number_row_count = 0;
 	   		
-			// bestehen Rollen- und/oder Kategorieeinschränkungen?
+			// bestehen Rollen- und/oder Kategorieeinschraenkungen?
         	$rolecatmarker = true;
         	if ($pPreferences->config['Konfigurationen']['selection_role'][$this->conf]<>' '
         	 || $pPreferences->config['Konfigurationen']['selection_cat'][$this->conf]<>' ')
@@ -228,7 +228,7 @@ class GenReport
     					$this->listData[$member][$key] = $user->getValue($gProfileFields->getPropertyById($data['id'], 'usf_name_intern'));
     				}
 				}
-				elseif($data['type']=='a')              //Sonderfall: Rollengesamtübersicht erstellen
+				elseif($data['type']=='a')              //Sonderfall: Rollengesamtuebersicht erstellen
 				{
 					$role = new TableRoles($gDb);
 					$memberShips = $user->getRoleMemberships();
@@ -272,7 +272,7 @@ class GenReport
 	}	
 		
     /**
-     * Erzeugt die Auswahlliste für die Spaltenauswahl
+     * Erzeugt die Auswahlliste fuer die Spaltenauswahl
      * @return void
      */
 	private function generate_headerSelection()
@@ -306,7 +306,7 @@ class GenReport
 		$k = 0;
 		while ($row = $statement->fetch())
 		{
-			// ueberprüfen, ob der Kategoriename mittels der Sprachdatei übersetzt werden kann
+			// ueberpruefen, ob der Kategoriename mittels der Sprachdatei uebersetzt werden kann
         	if(check_languagePKR($row['cat_name']))
         	{
         		$row['cat_name'] = $gL10n->get($row['cat_name']);
@@ -358,22 +358,22 @@ class GenReport
 				$i++;
         	}	
     	}
-    	//Zusatzspalte für die Gesamtrollenübersicht erzeugen
+    	//Zusatzspalte fuer die Gesamtrollenuebersicht erzeugen
     	$this->headerSelection[$i]['id']   		= 'adummy';          //a wie additional
         $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
 		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_ROLEMEMBERSHIPS');
 		$i++;
 		
-		//Zusatzspalte für die Anzahl erzeugen
+		//Zusatzspalte fuer die Anzahl erzeugen
     	$this->headerSelection[$i]['id']   		= 'ndummy';          //n wie number 
         $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
 		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_ROW');
 	}
 	
     /**
-     * Prüft, ob es den übergebenen Wert in der Spaltenauswahlliste gibt
+     * Prueft, ob es den uebergebenen Wert in der Spaltenauswahlliste gibt
      * Hinweis: die Spaltenauswahlliste ist immer aktuell, da sie neu generiert wird,
-     * der zu prüfende Wert könnte jedoch veraltet sein, da er aus der Konfigurationstabelle stammt
+     * der zu pruefende Wert koennte jedoch veraltet sein, da er aus der Konfigurationstabelle stammt
      * @param 	string $search_value
      * @return 	int
      */

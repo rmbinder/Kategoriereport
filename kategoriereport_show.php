@@ -14,7 +14,7 @@
  * mode   		: Output (html, print, csv-ms, csv-oo, pdf, pdfl)
  * full_screen  : 0 - (Default) show sidebar, head and page bottom of html page
  *                1 - Only show the list without any other html unnecessary elements
- * config		: Die gewählte Konfiguration (Alte Bezeichnung Fokus; die Standardeinstellung wurde über Einstellungen-Optionen festgelegt)
+ * config		: Die gewaehlte Konfiguration (Alte Bezeichnung Fokus; die Standardeinstellung wurde ueber Einstellungen-Optionen festgelegt)
  ***********************************************************************************************
  */
 

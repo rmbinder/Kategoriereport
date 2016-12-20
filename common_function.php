@@ -33,12 +33,12 @@ function getRole_IDPKR($role_name)
     $statement = $gDb->query($sql);
     $row = $statement->fetchObject();
 
-   // für den seltenen Fall, dass während des Betriebes die Sprache umgeschaltet wird:  $row->rol_id prüfen
+   // für den seltenen Fall, dass waehrend des Betriebes die Sprache umgeschaltet wird:  $row->rol_id pruefen
     return (isset($row->rol_id) ?  $row->rol_id : 0);
 }
 
 /**
- * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehörigkeit, berechtigt ist das Plugin aufzurufen
+ * Funktion prueft, ob der Nutzer, aufgrund seiner Rollenzugehoerigkeit berechtigt ist das Plugin aufzurufen
  * @param   array  $array   Array mit Rollen-IDs:   entweder $pPreferences->config['Pluginfreigabe']['freigabe']
  *                                                  oder $pPreferences->config['Pluginfreigabe']['freigabe_config']
  * @return  bool   $showPlugin
@@ -60,7 +60,7 @@ function check_showpluginPKR($array)
 }
 
 /**
- * Funktion überprüft den übergebenen Namen, ob er gemaess den Namenskonventionen für
+ * Funktion überprueft den übergebenen Namen, ob er gemaess den Namenskonventionen für
  * Profilfelder und Kategorien zum Uebersetzen durch eine Sprachdatei geeignet ist
  * Bsp: SYS_COMMON --> Rueckgabe true
  * Bsp: Mitgliedsbeitrag --> Rueckgabe false
@@ -72,10 +72,10 @@ function check_languagePKR($field_name)
 {
     $ret = false;
  
-    //prüfen, ob die ersten 3 Zeichen von $field_name Grußbuchstaben sind
-    //prüfen, ob das vierte Zeichen von $field_name ein _ ist
+    //pruefen, ob die ersten 3 Zeichen von $field_name Grußbuchstaben sind
+    //pruefen, ob das vierte Zeichen von $field_name ein _ ist
 
-    //Prüfung entfällt: prüfen, ob die restlichen Zeichen von $field_name Grußbuchstaben sind
+    //Prüfung entfaellt: pruefen, ob die restlichen Zeichen von $field_name Grußbuchstaben sind
     //if ((ctype_upper(substr($field_name,0,3))) && ((substr($field_name,3,1))=='_')  && (ctype_upper(substr($field_name,4)))   )
 
     if ((ctype_upper(substr($field_name,0,3))) && ((substr($field_name,3,1))=='_')   )
@@ -86,11 +86,11 @@ function check_languagePKR($field_name)
 }
  
 /**
- * Funktion prueft, ob ein User Angehöriger einer bestimmten Rolle ist
+ * Funktion prueft, ob ein User Angehoeriger einer bestimmten Rolle ist
  *
  * @param   int  $role_id   ID der zu pruefenden Rolle
  * @param   int  $user_id [optional]  ID des Users, fuer den die Mitgliedschaft geprueft werden soll;
- * 										ohne Übergabe, wird für den aktuellen User geprüft
+ * 										ohne Uebergabe wird für den aktuellen User geprueft
  * @return  bool
  */
 function hasRole_IDPKR($role_id, $user_id = 0)
@@ -133,7 +133,7 @@ function hasRole_IDPKR($role_id, $user_id = 0)
 }
 
 /**
- * Funktion prueft, ob ein User Angehöriger einer bestimmten Kategorie ist
+ * Funktion prueft, ob ein User Angehoeriger einer bestimmten Kategorie ist
  *
  * @param   int  $cat_id    ID der zu pruefenden Kategorie
  * @param   int  $user_id   ID des Users, fuer den die Mitgliedschaft geprueft werden soll
