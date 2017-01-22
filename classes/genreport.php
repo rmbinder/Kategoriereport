@@ -88,7 +88,8 @@ class GenReport
              				WHERE cat_type = \'ROL\' 
              				AND cat_id = rol_cat_id
              				AND mem_rol_id = rol_id
-             				AND mem_end = \'9999-12-31\'
+             				AND mem_begin <= \''.DATE_NOW.'\'
+           					AND mem_end    > \''.DATE_NOW.'\'
              				AND cat_id = \''.$id.'\'
              				AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                				OR cat_org_id IS NULL )';
@@ -105,7 +106,8 @@ class GenReport
         			$sql = 'SELECT mem_usr_id
              				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
              				WHERE mem_rol_id = rol_id
-             				AND mem_end = \'9999-12-31\'
+             				AND mem_begin <= \''.DATE_NOW.'\'
+           					AND mem_end    > \''.DATE_NOW.'\'
              				AND rol_id = \''.$id.'\' ';
 					$statement = $gDb->query($sql);
 
@@ -120,7 +122,8 @@ class GenReport
         			$sql = 'SELECT mem_usr_id
              				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
              				WHERE mem_rol_id = rol_id
-             				AND mem_end = \'9999-12-31\'
+             				AND mem_begin <= \''.DATE_NOW.'\'
+           					AND mem_end    > \''.DATE_NOW.'\'
              				AND rol_id = \''.$id.'\' 
              				AND mem_leader = 0 ';
 					$statement = $gDb->query($sql);
@@ -136,7 +139,8 @@ class GenReport
         			$sql = 'SELECT mem_usr_id
              				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
              				WHERE mem_rol_id = rol_id
-             				AND mem_end = \'9999-12-31\'
+             				AND mem_begin <= \''.DATE_NOW.'\'
+           					AND mem_end    > \''.DATE_NOW.'\'
              				AND rol_id = \''.$id.'\' 
              				AND mem_leader = 1 ';
 					$statement = $gDb->query($sql);
@@ -170,8 +174,9 @@ class GenReport
              	AND rol_valid  = 1   
              	AND rol_cat_id = cat_id
              	AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-               	OR cat_org_id IS NULL )
-             	AND mem_end = \'9999-12-31\' ';
+               		OR cat_org_id IS NULL )
+             	AND mem_begin <= \''.DATE_NOW.'\'
+           		AND mem_end    > \''.DATE_NOW.'\' ';
 		
 		$statement = $gDb->query($sql);
 		while($row = $statement->fetch())
