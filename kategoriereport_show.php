@@ -372,6 +372,13 @@ foreach($report->listData as $member => $memberdata)
         	if($usf_id!=0)     //only profileFields
         	{
         		$content = $gProfileFields->getHtmlValue($gProfileFields->getPropertyById($usf_id, 'usf_name_intern'), $content, $member);
+        		if ($getMode === 'html'
+        			&&    ($usf_id === (int) $gProfileFields->getProperty('LAST_NAME', 'usf_id')
+        				|| $usf_id === (int) $gProfileFields->getProperty('FIRST_NAME', 'usf_id')))
+        		{
+        			$content = '<a href="'.ADMIDIO_URL.FOLDER_MODULES.'/profile/profile.php?user_id='.$member.'">'.$content.'</a>';
+        		}
+        		
         	}
        	
             // if empty string pass a whitespace
@@ -391,11 +398,7 @@ foreach($report->listData as $member => $memberdata)
     {
     	$str_csv = $str_csv. "\n";
     }
-    elseif($getMode == 'html')
-    {
-        $table->addRowByArray($columnValues, null, array('style' => 'cursor: pointer', 'onclick' => 'window.location.href=\''. ADMIDIO_URL . FOLDER_MODULES . '/profile/profile.php?user_id='. $member. '\''));
-    }
-    elseif($getMode == 'print' || $getMode == 'pdf')
+	else
     {
         $table->addRowByArray($columnValues, null, array('nobr' => 'true'));
     }
