@@ -3,13 +3,13 @@
  ***********************************************************************************************
  * Kategoriereport
  *
- * Version 2.2.0
+ * Version 2.3.0 Beta 1
  *
  * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehoerigkeiten eines Mitglieds.
  * 
  * Author: rmb
  *
- * Compatible with Admidio version 3.2
+ * Compatible with Admidio version 3.3
  *
  * @copyright 2004-2016 The Admidio Team
  * @see http://www.admidio.org/
@@ -17,7 +17,7 @@
  ***********************************************************************************************
  */
 
-//$gNaviagation ist zwar definiert, aber in diesem Script in bestimmten Faellen nicht immer sichtbar
+//$gNavigation ist zwar definiert, aber in diesem Script nicht immer sichtbar
 global $gNavigation;
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
@@ -31,7 +31,7 @@ $pPreferences = new ConfigTablePKR();
 
 //Initialisierung und Anzeige des Links nur, wenn vorher keine Deinstallation stattgefunden hat
 // sonst waere die Deinstallation hinfaellig, da hier wieder Default-Werte der config in die DB geschrieben werden
-if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false)
+if (strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false)
 {
 	if ($pPreferences->checkforupdate())
 	{
@@ -43,12 +43,11 @@ if(  strpos($gNavigation->getUrl(), 'preferences_function.php?mode=3') === false
 	}
 
 	// Zeige Link zum Plugin
-	if(check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe']) )
+	if (check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe']) )
 	{
 		if (isset($pluginMenu))
 		{
-			// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, 
-			// dann innerhalb dieses Menüs anzeigen
+			// wenn in der my_body_bottom.php ein $pluginMenu definiert wurde, dann innerhalb dieses Menüs anzeigen
 			$pluginMenu->addItem('categoryreport_show', FOLDER_PLUGINS . $plugin_folder .'/kategoriereport_show.php?mode=html',
 				$gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT'), '/icons/lists.png'); 
 		}

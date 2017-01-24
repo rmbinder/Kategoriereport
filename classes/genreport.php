@@ -22,9 +22,9 @@
 
 class GenReport
 {    
-    public	  $headerData = array();               ///< Array mit allen Spaltenueberschriften
-    public	  $listData  =array();                 ///< Array mit den Daten für den Report
-    public	  $headerSelection  =array();          ///< Array mit der Auswahlliste für die Spaltenauswahl
+    public	  $headerData      = array();          ///< Array mit allen Spaltenueberschriften
+    public	  $listData        = array();          ///< Array mit den Daten für den Report
+    public	  $headerSelection = array();          ///< Array mit der Auswahlliste für die Spaltenauswahl
     public	  $conf;							   ///< die gewaehlte Konfiguration
 
     /**
@@ -42,20 +42,20 @@ class GenReport
      */
 	public function generate_listData()
 	{
-		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences,$gL10n;
+		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences, $gL10n;
 		
-		$workarray = array();
+		$workarray      = array();
 		$number_row_pos = -1;
-		$number_col = array();		
+		$number_col     = array();		
 		
-		$colfields=explode(',',$pPreferences->config['Konfigurationen']['col_fields'][$this->conf]);
+		$colfields = explode(',', $pPreferences->config['Konfigurationen']['col_fields'][$this->conf]);
 		// die gespeicherten Konfigurationen durchlaufen
-		foreach($colfields as $key => $data)
+		foreach ($colfields as $key => $data)
         {
         	// das ist nur zur Ueberpruefung, ob diese Freigabe noch existent ist
             // es koennte u.U. ja sein, daß ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
         	$found = $this->isInHeaderSelection($data);
-            if($found==0)
+            if ($found == 0)
             {
             	continue;	
             }
@@ -65,16 +65,16 @@ class GenReport
             }
             
         	//$data splitten in Typ und ID
-        	$type=substr($data,0,1);
-        	$id=(int) substr($data,1);
+        	$type = substr($data, 0, 1);
+        	$id = (int) substr($data, 1);
         	
-        	$workarray[$key+1]['type']=$type;
-        	$workarray[$key+1]['id']=$id;
+        	$workarray[$key+1]['type'] = $type;
+        	$workarray[$key+1]['id'] = $id;
         	
         	$this->headerData[$key+1]['id'] = 0;
         	$this->headerData[$key+1]['data'] = $this->headerSelection[$found]['data'];
         	
-        	switch($type)
+        	switch ($type)
         	{
         		case 'p':                    //p=profileField
         			// nur bei Profilfeldern wird 'id' mit der 'usf_id' ueberschrieben
@@ -84,7 +84,7 @@ class GenReport
         		case 'c':                    //c=categorie
         			
         			$sql = 'SELECT DISTINCT mem_usr_id
-             				FROM '.TBL_MEMBERS.', '.TBL_CATEGORIES.' , '.TBL_ROLES.' 
+             				FROM '.TBL_MEMBERS.', '.TBL_CATEGORIES.', '.TBL_ROLES.' 
              				WHERE cat_type = \'ROL\' 
              				AND cat_id = rol_cat_id
              				AND mem_rol_id = rol_id
@@ -97,7 +97,7 @@ class GenReport
 
 					while ($row = $statement->fetch())
 					{
-						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
+						$workarray[$key+1]['usr_id'][] = $row['mem_usr_id'];
 					}
 					$number_col[$key+1] = 0;
         			break;
@@ -113,7 +113,7 @@ class GenReport
 
 					while ($row = $statement->fetch())
 					{
-						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
+						$workarray[$key+1]['usr_id'][] = $row['mem_usr_id'];
 					}
 					$number_col[$key+1] = 0;
         			break;
@@ -130,7 +130,7 @@ class GenReport
 
 					while ($row = $statement->fetch())
 					{
-						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
+						$workarray[$key+1]['usr_id'][] = $row['mem_usr_id'];
 					}
 					$number_col[$key+1] = 0;
         			break;        			
@@ -147,12 +147,12 @@ class GenReport
 
 					while ($row = $statement->fetch())
 					{
-						$workarray[$key+1]['usr_id'][]=$row['mem_usr_id'];
+						$workarray[$key+1]['usr_id'][] = $row['mem_usr_id'];
 					}
 					$number_col[$key+1] = 0;
         			break;
 				case 'n':                    //n=number
-        			// eine oder mehrere Zählspalten wurden definiert
+        			// eine oder mehrere Zaehlspalten wurden definiert
         			// die Position der letzten Spalte zwischenspeichern
         			// Werte werden aber nur in der letzten Zaehlspalte angezeigt
         			// alles andere ist Unsinn (warum soll derselbe Wert mehrfach angezeigt werden)
@@ -169,7 +169,7 @@ class GenReport
         
 		// alle Mitglieder der aktuellen Organisation einlesen
 		$sql = ' SELECT mem_usr_id
-             	FROM '.TBL_MEMBERS.' , '.TBL_ROLES.' , '. TBL_CATEGORIES. ' 
+             	FROM '.TBL_MEMBERS.', '.TBL_ROLES.', '.TBL_CATEGORIES. ' 
              	WHERE mem_rol_id = rol_id
              	AND rol_valid  = 1   
              	AND rol_cat_id = cat_id
@@ -179,7 +179,7 @@ class GenReport
            		AND mem_end    > \''.DATE_NOW.'\' ';
 		
 		$statement = $gDb->query($sql);
-		while($row = $statement->fetch())
+		while ($row = $statement->fetch())
 		{
 			$this->listData[$row['mem_usr_id']] = array();
 		}
@@ -194,18 +194,18 @@ class GenReport
 	   		
 			// bestehen Rollen- und/oder Kategorieeinschraenkungen?
         	$rolecatmarker = true;
-        	if ($pPreferences->config['Konfigurationen']['selection_role'][$this->conf]<>' '
-        	 || $pPreferences->config['Konfigurationen']['selection_cat'][$this->conf]<>' ')
+        	if ($pPreferences->config['Konfigurationen']['selection_role'][$this->conf] <> ' '
+        	 || $pPreferences->config['Konfigurationen']['selection_cat'][$this->conf] <> ' ')
         	{
         		$rolecatmarker = false;	
-        		foreach (explode(',',$pPreferences->config['Konfigurationen']['selection_role'][$this->conf]) as $rol)
+        		foreach (explode(',', $pPreferences->config['Konfigurationen']['selection_role'][$this->conf]) as $rol)
         		{
         			if (hasRole_IDPKR($rol, $member))
         			{
         				$rolecatmarker = true;
         			}
         		}	
-				foreach (explode(',',$pPreferences->config['Konfigurationen']['selection_cat'][$this->conf]) as $cat)
+				foreach (explode(',', $pPreferences->config['Konfigurationen']['selection_cat'][$this->conf]) as $cat)
         		{
         			if (hasCategorie_IDPKR($cat, $member))
         			{
@@ -213,46 +213,46 @@ class GenReport
         			}
         		}
         	} 			
-			if (!$rolecatmarker )
+			if (!$rolecatmarker)
         	{
         		unset($this->listData[$member]);
         		continue;
         	}
         	
-			foreach($workarray as $key => $data)
+			foreach ($workarray as $key => $data)
 			{
-				if($data['type']=='p')
+				if ($data['type'] == 'p')
 				{				
-                    if(  ($gProfileFields->getPropertyById($data['id'], 'usf_type') == 'DROPDOWN'
+                    if ( ($gProfileFields->getPropertyById($data['id'], 'usf_type') == 'DROPDOWN'
                        	|| $gProfileFields->getPropertyById($data['id'], 'usf_type') == 'RADIO_BUTTON') )
     				{
-    					$this->listData[$member][$key] = $user->getValue($gProfileFields->getPropertyById($data['id'], 'usf_name_intern'),'database');
+    					$this->listData[$member][$key] = $user->getValue($gProfileFields->getPropertyById($data['id'], 'usf_name_intern'), 'database');
     				}
     				else 
     				{
     					$this->listData[$member][$key] = $user->getValue($gProfileFields->getPropertyById($data['id'], 'usf_name_intern'));
     				}
 				}
-				elseif($data['type']=='a')              //Sonderfall: Rollengesamtuebersicht erstellen
+				elseif ($data['type'] == 'a')              //Sonderfall: Rollengesamtuebersicht erstellen
 				{
 					$role = new TableRoles($gDb);
 					$memberShips = $user->getRoleMemberships();
 					
 					$this->listData[$member][$key] = '';
-					foreach($memberShips as $rol_id)
+					foreach ($memberShips as $rol_id)
 					{
 						$role->readDataById($rol_id);
 						$this->listData[$member][$key] .= $role->getValue('rol_name').'; ';
 					}
 					$this->listData[$member][$key] = trim($this->listData[$member][$key],'; ');
 				}
-				elseif($data['type']=='n')              //Sonderfall: Anzahlspalte
+				elseif ($data['type'] == 'n')              //Sonderfall: Anzahlspalte
 				{
 					$this->listData[$member][$key] = '';
 				}
 				else 
 				{
-					if(isset($data['usr_id']) AND  in_array($member,$data['usr_id']))
+					if (isset($data['usr_id']) AND in_array($member,$data['usr_id']))
                 	{
                     	$this->listData[$member][$key] = $pPreferences->config['Konfigurationen']['col_yes'][$this->conf];
                     	$number_row_count++;
@@ -264,13 +264,13 @@ class GenReport
                 	}
 				}
 			}
-			if($number_row_pos>-1)
+			if ($number_row_pos > -1)
 			{
 				$this->listData[$member][$number_row_pos]=$number_row_count;
 			}
 		}
 
-		if ($pPreferences->config['Konfigurationen']['number_col'][$this->conf]==1)
+		if ($pPreferences->config['Konfigurationen']['number_col'][$this->conf] === 1)
 		{
 			$this->listData[max(array_keys($this->listData))+1] = $number_col;
 		}
@@ -282,25 +282,25 @@ class GenReport
      */
 	private function generate_headerSelection()
 	{
-		global $gDb,  $gL10n, $gProfileFields, $gCurrentOrganization, $gCurrentUser;
+		global $gDb, $gL10n, $gProfileFields, $gCurrentOrganization, $gCurrentUser;
 	    
         $categories = array();   
         
         $i 	= 1;
-        foreach($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->mProfileFields as $field)
         {               
-            if($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
+            if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
             {   
-                $this->headerSelection[$i]['id']   = 'p'.$field->getValue('usf_id');
-                $this->headerSelection[$i]['cat_name']   = $field->getValue('cat_name');
-                $this->headerSelection[$i]['data']   = addslashes($field->getValue('usf_name'));
+                $this->headerSelection[$i]['id']       = 'p'.$field->getValue('usf_id');
+                $this->headerSelection[$i]['cat_name'] = $field->getValue('cat_name');
+                $this->headerSelection[$i]['data']     = addslashes($field->getValue('usf_name'));
                 $i++;
             }
         }
         
 		// alle (Rollen-)Kategorien der aktuellen Organisation einlesen
 		$sql = ' SELECT DISTINCT cat.cat_name, cat.cat_id
-             	FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+             	FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
              	WHERE cat.cat_type = \'ROL\' 
              	AND cat.cat_id = rol.rol_cat_id
              	AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
@@ -312,7 +312,7 @@ class GenReport
 		while ($row = $statement->fetch())
 		{
 			// ueberpruefen, ob der Kategoriename mittels der Sprachdatei uebersetzt werden kann
-        	if(check_languagePKR($row['cat_name']))
+        	if (check_languagePKR($row['cat_name']))
         	{
         		$row['cat_name'] = $gL10n->get($row['cat_name']);
         	}
@@ -325,54 +325,54 @@ class GenReport
 		// alle eingelesenen Kategorien durchlaufen und die Rollen dazu einlesen
   		foreach ($categories as $data)
 		{
-			$this->headerSelection[$i]['id']   		= 'c'.$data['cat_id'];
-			$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
-			$this->headerSelection[$i]['data']		= $data['data'];
+			$this->headerSelection[$i]['id']   	   = 'c'.$data['cat_id'];
+			$this->headerSelection[$i]['cat_name'] = $data['cat_name'];
+			$this->headerSelection[$i]['data']	   = $data['data'];
 			$i++;
 
        		$sql = 'SELECT DISTINCT rol.rol_name, rol.rol_id, rol.rol_valid, rol.rol_visible
-                	FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+                	FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
                 	WHERE cat.cat_id = \''.$data['cat_id'].'\'
                 	AND cat.cat_id = rol.rol_cat_id';
     		$statement = $gDb->query($sql);
     		
-        	while($row = $statement->fetch())
+        	while ($row = $statement->fetch())
         	{
-        		$marker='';
-        		if($row['rol_valid']==0 || $row['rol_visible']==0)
+        		$marker = '';
+        		if ($row['rol_valid'] == 0 || $row['rol_visible'] == 0)
         		{
         			$marker = ' (';
-        			$marker .= ($row['rol_valid']==0 ? '*' : '');
-        			$marker .= ($row['rol_visible']==0 ? '!' : '');
+        			$marker .= ($row['rol_valid'] == 0 ? '*' : '');
+        			$marker .= ($row['rol_visible'] == 0 ? '!' : '');
         			$marker .= ')';
         		}
         			
-        		$this->headerSelection[$i]['id']   		= 'r'.$row['rol_id'];       //r wie role
-        		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
-				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_ROLE').': '.$row['rol_name'].$marker;
+        		$this->headerSelection[$i]['id']   	   = 'r'.$row['rol_id'];       //r wie role
+        		$this->headerSelection[$i]['cat_name'] = $data['cat_name'];
+				$this->headerSelection[$i]['data']	   = $gL10n->get('SYS_ROLE').': '.$row['rol_name'].$marker;
 				$i++;
 				
-       			$this->headerSelection[$i]['id']   		= 'w'.$row['rol_id'];		//w wie without (Leader)
-        		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
-				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_ROLE').' '.$gL10n->get('PLG_KATEGORIEREPORT_WITHOUT').' '.$gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
+       			$this->headerSelection[$i]['id']   	   = 'w'.$row['rol_id'];		//w wie without (Leader)
+        		$this->headerSelection[$i]['cat_name'] = $data['cat_name'];
+				$this->headerSelection[$i]['data']	   = $gL10n->get('SYS_ROLE').' '.$gL10n->get('PLG_KATEGORIEREPORT_WITHOUT').' '.$gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
 				$i++;				
         		
-				$this->headerSelection[$i]['id']   		= 'l'.$row['rol_id'];		//l wie leader
-        		$this->headerSelection[$i]['cat_name']	= $data['cat_name'];
-				$this->headerSelection[$i]['data']		= $gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
+				$this->headerSelection[$i]['id']   	   = 'l'.$row['rol_id'];		//l wie leader
+        		$this->headerSelection[$i]['cat_name'] = $data['cat_name'];
+				$this->headerSelection[$i]['data']	   = $gL10n->get('SYS_LEADER').': '.$row['rol_name'].$marker;
 				$i++;
         	}	
     	}
     	//Zusatzspalte fuer die Gesamtrollenuebersicht erzeugen
-    	$this->headerSelection[$i]['id']   		= 'adummy';          //a wie additional
-        $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
-		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_ROLEMEMBERSHIPS');
+    	$this->headerSelection[$i]['id']   	   = 'adummy';          //a wie additional
+        $this->headerSelection[$i]['cat_name'] = $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
+		$this->headerSelection[$i]['data']	   = $gL10n->get('PLG_KATEGORIEREPORT_ROLEMEMBERSHIPS');
 		$i++;
 		
 		//Zusatzspalte fuer die Anzahl erzeugen
-    	$this->headerSelection[$i]['id']   		= 'ndummy';          //n wie number 
-        $this->headerSelection[$i]['cat_name']	= $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
-		$this->headerSelection[$i]['data']		= $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_ROW');
+    	$this->headerSelection[$i]['id']   	   = 'ndummy';          //n wie number 
+        $this->headerSelection[$i]['cat_name'] = $gL10n->get('PLG_KATEGORIEREPORT_ADDITIONAL_COLS');
+		$this->headerSelection[$i]['data']	   = $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_ROW');
 	}
 	
     /**
@@ -385,9 +385,9 @@ class GenReport
 	public function isInheaderSelection($search_value)
 	{
 		$ret = 0;
-		foreach($this->headerSelection as $key =>$data)
+		foreach ($this->headerSelection as $key => $data)
 		{
-			if($data['id']==$search_value)
+			if ($data['id'] == $search_value)
 			{
 				$ret = $key;
 				break;

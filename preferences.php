@@ -30,7 +30,7 @@ $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
 
 // only authorized user are allowed to start this module
-if(!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+if (!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	$gMessage->setForwardUrl($gHomepage, 3000);
     $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
@@ -38,8 +38,8 @@ if(!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config
 
 $headline = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 
-$num_configs	 = count($pPreferences->config['Konfigurationen']['col_desc']);
-if($getAdd)
+$num_configs = count($pPreferences->config['Konfigurationen']['col_desc']);
+if ($getAdd)
 {
 	foreach($pPreferences->config['Konfigurationen'] as $key => $dummy)
 	{
@@ -57,7 +57,7 @@ $page = new HtmlPage($headline);
 $page->enableModal();
 
 // open the module configurations if a new configuration is added 
-if($getAdd)
+if ($getAdd)
 {
     $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
         $("#tabs-common").attr("class", "tab-pane active");
@@ -108,10 +108,10 @@ $page->addJavascript('
     ', true);
 
 $javascriptCode = '
-    var arr_user_fields    = createProfileFieldsArray();
+    var arr_user_fields = createProfileFieldsArray();
     ';
     
-    // create a array with the necessary data
+    // create an array with the necessary data
 	for ($conf=0;$conf<$num_configs;$conf++)
     {      
     	$javascriptCode .= ' 
@@ -171,18 +171,18 @@ $javascriptCode = '
     	function createColumnsArray'.$conf.'()
     	{   
         	var default_fields = new Array(); ';
-    		$fields = explode(',',$pPreferences->config['Konfigurationen']['col_fields'][$conf]);
-    		for($number = 0; $number < count($fields); $number++)
-            {          	
+    		$fields = explode(',', $pPreferences->config['Konfigurationen']['col_fields'][$conf]);
+    		for ($number = 0; $number < count($fields); $number++)
+            {           	
             	// das ist nur zur Überprüfung, ob diese Freigabe noch existent ist
             	// es koennte u.U. ja sein, dass ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
             	$found = $report->isInHeaderSelection($fields[$number]);
-            	if($found>0)
+            	if ($found > 0)
             	{
             		$javascriptCode .= '
-                	default_fields['. $number. '] 		   = new Object();
-                	default_fields['. $number. ']["id"]    = "'. $report->headerSelection[$found]["id"]. '";
-                	default_fields['. $number. ']["data"]  = "'. $report->headerSelection[$found]["data"]. '";
+                	default_fields['. $number. '] 		  = new Object();
+                	default_fields['. $number. ']["id"]   = "'. $report->headerSelection[$found]["id"]. '";
+                	default_fields['. $number. ']["data"] = "'. $report->headerSelection[$found]["data"]. '";
                 	';
             	}
            	}
@@ -197,9 +197,9 @@ $javascriptCode = '
     { 
         var user_fields = new Array(); ';
     
-        // create a array for all columns with the necessary data
+        // create an array for all columns with the necessary data
         $i = 1;
-        for($i = 1; $i < count($report->headerSelection)+1; $i++)
+        for ($i = 1; $i < count($report->headerSelection)+1; $i++)
         {      
                 $javascriptCode .= '              
                 user_fields['. $i. '] 				= new Object();
@@ -213,19 +213,16 @@ $javascriptCode = '
     }
 ';
 $page->addJavascript($javascriptCode);
-$javascriptCode = '$(document).ready(function() {   
-';
-	for($conf = 0; $conf < $num_configs; $conf++)
+$javascriptCode = '$(document).ready(function() { ';
+	for ($conf = 0; $conf < $num_configs; $conf++)
 	{
 		$javascriptCode .= '  
-    	for(var counter = 0; counter < '. count(explode(',',$pPreferences->config['Konfigurationen']['col_fields'][$conf])). '; counter++) {
+    	for(var counter = 0; counter < '. count(explode(',', $pPreferences->config['Konfigurationen']['col_fields'][$conf])). '; counter++) {
         	addColumn'. $conf. '();
     	}
     	';
 	}     	
-$javascriptCode .= '
-});
-';
+$javascriptCode .= ' }); ';
 $page->addJavascript($javascriptCode, true);  
 
 // create module menu with back link
@@ -288,14 +285,14 @@ $page->addHtml('
                         	$sql = 'SELECT rol_id, rol_name, cat_name
                                 FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.' 
                                 WHERE cat_id = rol_cat_id
-                                AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                 OR cat_org_id IS NULL )';
                        		$form->addSelectBoxFromSql('selection_role'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => explode(',',$pPreferences->config['Konfigurationen']['selection_role'][$conf]),'multiselect' => true));
                         	
 				        	$sql = 'SELECT cat_id, cat_name
                                     FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.' 
                                     WHERE cat_id = rol_cat_id
-                                    AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                    AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                     OR cat_org_id IS NULL )';
                        		$form->addSelectBoxFromSql('selection_cat'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION'), $gDb, $sql, array('defaultValue' => explode(',',$pPreferences->config['Konfigurationen']['selection_cat'][$conf]),'multiselect' => true));
  							$form->addCheckbox('number_col'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL'), $pPreferences->config['Konfigurationen']['number_col'][$conf]);
@@ -347,9 +344,9 @@ $page->addHtml('
                         // show form
                         $form = new HtmlForm('plugin_control_preferences_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?form=plugin_control', $page, array('class' => 'form-preferences'));
                         $sql = 'SELECT rol.rol_id, rol.rol_name, cat.cat_name
-                                FROM '.TBL_CATEGORIES.' as cat, '.TBL_ROLES.' as rol
+                                FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
                                 WHERE cat.cat_id = rol.rol_cat_id
-                                AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                AND ( cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
                                 OR cat.cat_org_id IS NULL )';
 				        $form->addSelectBoxFromSql('freigabe', $gL10n->get('PLG_KATEGORIEREPORT_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe'], 'helpTextIdInline' => 'PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC','multiselect' => true));				                                                 
                         $form->addSelectBoxFromSql('freigabe_config', '', $gDb, $sql, array('defaultValue' => $pPreferences->config['Pluginfreigabe']['freigabe_config'], 'helpTextIdInline' => 'PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC2','multiselect' => true));

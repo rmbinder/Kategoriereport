@@ -49,9 +49,9 @@ function check_showpluginPKR($array)
 	
     $showPlugin = false;
 
-    foreach ($array AS $i)
+    foreach ($array as $i)
     {
-        if($gCurrentUser ->isMemberOfRole($i))
+        if ($gCurrentUser->isMemberOfRole($i))
         {
             $showPlugin = true;
         } 
@@ -78,7 +78,7 @@ function check_languagePKR($field_name)
     //Prüfung entfaellt: pruefen, ob die restlichen Zeichen von $field_name Grußbuchstaben sind
     //if ((ctype_upper(substr($field_name,0,3))) && ((substr($field_name,3,1))=='_')  && (ctype_upper(substr($field_name,4)))   )
 
-    if ((ctype_upper(substr($field_name,0,3))) && ((substr($field_name,3,1))=='_')   )
+    if ((ctype_upper(substr($field_name,0,3))) && ((substr($field_name,3,1)) == '_')   )
     {
       $ret = true;
     }
@@ -97,11 +97,11 @@ function hasRole_IDPKR($role_id, $user_id = 0)
 {
     global $gCurrentUser, $gDb, $gCurrentOrganization;
 
-    if($user_id == 0)
+    if ($user_id === 0)
     {
         $user_id = $gCurrentUser->getValue('usr_id');
     }
-    elseif(is_numeric($user_id) == false)
+    elseif (is_numeric($user_id) == false)
     {
         return -1;
     }
@@ -122,7 +122,7 @@ function hasRole_IDPKR($role_id, $user_id = 0)
 
     $user_found = $statement->rowCount();
 
-    if($user_found == 1)
+    if ($user_found === 1)
     {
         return 1;
     }
@@ -143,11 +143,11 @@ function hasCategorie_IDPKR($cat_id, $user_id = 0)
 {
     global $gCurrentUser, $gDb, $gCurrentOrganization;
 
-    if($user_id == 0)
+    if ($user_id == 0)
     {
         $user_id = $gCurrentUser->getValue('usr_id');
     }
-    elseif(is_numeric($user_id) == false)
+    elseif (is_numeric($user_id) == false)
     {
         return -1;
     }
@@ -168,7 +168,7 @@ function hasCategorie_IDPKR($cat_id, $user_id = 0)
 
     $user_found = $statement->rowCount();
 
-    if($user_found == 1)
+    if ($user_found == 1)
     {
         return 1;
     }

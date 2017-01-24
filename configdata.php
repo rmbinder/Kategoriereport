@@ -13,10 +13,10 @@
 global $gL10n, $gProfileFields;
 
 //Standardwerte einer Neuinstallation oder beim Anfuegen einer zusaetzlichen Konfiguration
-$config_default['Pluginfreigabe']['freigabe'] = array(	getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
-													    getRole_IDPKR($gL10n->get('SYS_MEMBER')));
-$config_default['Pluginfreigabe']['freigabe_config'] = array(	getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
-															    getRole_IDPKR($gL10n->get('SYS_MEMBER')));
+$config_default['Pluginfreigabe']['freigabe']        = array(getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
+													         getRole_IDPKR($gL10n->get('SYS_MEMBER')));
+$config_default['Pluginfreigabe']['freigabe_config'] = array(getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
+															 getRole_IDPKR($gL10n->get('SYS_MEMBER')));
 
 $config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('PLG_KATEGORIEREPORT_PATTERN')),
 											'col_fields' 	=> array(	'p'.$gProfileFields->getProperty('FIRST_NAME', 'usf_id').','.
@@ -28,7 +28,7 @@ $config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('P
  											'selection_role'=> array(' '),
 											'selection_cat'	=> array(' '),
 											'number_col'	=> array(0)  );
-															
+
 $config_default['Optionen']['config_default'] = 0; 
 															
 $config_default['Plugininformationen']['version'] = '';
@@ -37,7 +37,7 @@ $config_default['Plugininformationen']['stand'] = '';
 /*
  *  Mittels dieser Zeichenkombination werden Konfigurationsdaten, die zur Laufzeit als Array verwaltet werden,
  *  zu einem String zusammengefasst und in der Admidiodatenbank gespeichert. 
- *  Muessen die vorgegebenen Zeichenkombinationen (#_#) jedoch ebenfalls, z.B. in der Beschreibung 
+ *  Muss die vorgegebene Zeichenkombination (#_#) jedoch ebenfalls, z.B. in der Beschreibung 
  *  einer Konfiguration, verwendet werden, so kann das Plugin gespeicherte Konfigurationsdaten 
  *  nicht mehr richtig einlesen. In diesem Fall ist die vorgegebene Zeichenkombination abzuaendern (z.B. in !-!)
  *  

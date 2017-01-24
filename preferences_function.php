@@ -9,10 +9,10 @@
  * 
  * Parameters:
  *
- * mode     : 1 - Save preferences
- *            2 - show  dialog for deinstallation
- *            3 - deinstall
- * form         - The name of the form preferences that were submitted.
+ * mode:  1 - Save preferences
+ *        2 - show dialog for deinstallation
+ *        3 - deinstall
+ * form     - The name of the form preferences that were submitted.
  * 
  ***********************************************************************************************
  */
@@ -25,7 +25,7 @@ $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
 
 // only authorized user are allowed to start this module
-if(!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+if (!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
 {
 	$gMessage->setForwardUrl($gHomepage, 3000);
     $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
@@ -36,25 +36,23 @@ $getMode = admFuncVariableIsValid($_GET, 'mode', 'numeric', array('defaultValue'
 $getForm = admFuncVariableIsValid($_GET, 'form', 'string');
 
 // in ajax mode only return simple text on error
-if($getMode == 1)
+if ($getMode === 1)
 {
     $gMessage->showHtmlTextOnly(true);
 }
 
-switch($getMode)
+switch ($getMode)
 {
 case 1:
-	
 	try
 	{
-        
-		switch($getForm)
+		switch ($getForm)
     	{
     		case 'configurations':
 				unset($pPreferences->config['Konfigurationen']);
 				$konf_neu = 0;
     			
-				for($conf = 0; isset($_POST['col_desc'. $conf]); $conf++)
+				for ($conf = 0; isset($_POST['col_desc'. $conf]); $conf++)
     			{
     				if (empty($_POST['col_desc'. $conf]))	
     				{
@@ -65,26 +63,26 @@ case 1:
     					$konf_neu++;
     				}
     				
-    				$pPreferences->config['Konfigurationen']['col_desc'][] = $_POST['col_desc'. $conf];
-    				$pPreferences->config['Konfigurationen']['col_yes'][] = $_POST['col_yes'. $conf];
-    				$pPreferences->config['Konfigurationen']['col_no'][] = $_POST['col_no'. $conf];
-    				$pPreferences->config['Konfigurationen']['selection_role'][] = isset($_POST['selection_role'. $conf]) ? trim(implode(',',$_POST['selection_role'. $conf]),',') : ' ';
-    				$pPreferences->config['Konfigurationen']['selection_cat'][] = isset($_POST['selection_cat'. $conf]) ? trim(implode(',',$_POST['selection_cat'. $conf]),',') : ' ';
-    				$pPreferences->config['Konfigurationen']['number_col'][] = isset($_POST['number_col'. $conf]) ? 1 : 0 ;
+    				$pPreferences->config['Konfigurationen']['col_desc'][]       = $_POST['col_desc'. $conf];
+    				$pPreferences->config['Konfigurationen']['col_yes'][]        = $_POST['col_yes'. $conf];
+    				$pPreferences->config['Konfigurationen']['col_no'][]         = $_POST['col_no'. $conf];
+    				$pPreferences->config['Konfigurationen']['selection_role'][] = isset($_POST['selection_role'. $conf]) ? trim(implode(',', $_POST['selection_role'. $conf]),',') : ' ';
+    				$pPreferences->config['Konfigurationen']['selection_cat'][]  = isset($_POST['selection_cat'. $conf]) ? trim(implode(',', $_POST['selection_cat'. $conf]),',') : ' ';
+    				$pPreferences->config['Konfigurationen']['number_col'][]     = isset($_POST['number_col'. $conf]) ? 1 : 0 ;
 
     				$allColumnsEmpty = true;
 
     				$fields = '';
-    				for($number = 1; isset($_POST['column'.$conf.'_'.$number]); $number++)
+    				for ($number = 1; isset($_POST['column'.$conf.'_'.$number]); $number++)
     				{
-        				if(strlen($_POST['column'.$conf.'_'.$number]) > 0)
+        				if (strlen($_POST['column'.$conf.'_'.$number]) > 0)
         				{
         					$allColumnsEmpty = false;
             				$fields .= $_POST['column'.$conf.'_'.$number].',';
         				}
     				}	
     				
-    				if($allColumnsEmpty)
+    				if ($allColumnsEmpty)
     				{
     					$gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('PLG_KATEGORIEREPORT_COLUMN')));
     				}
@@ -93,13 +91,13 @@ case 1:
     			}	
     				
     			// die Standardeinstellung der Konfigurationen darf nicht groesser sein als die max. Anzahl der Konfigurationen
-    			if($pPreferences->config['Optionen']['config_default']>$konf_neu-1)
+    			if ($pPreferences->config['Optionen']['config_default'] > $konf_neu-1)
     			{
-    				$pPreferences->config['Optionen']['config_default']=$konf_neu-1;
+    				$pPreferences->config['Optionen']['config_default'] = $konf_neu-1;
     			}
     			
     			// wenn $konf_neu immer noch 0 ist, dann wurden alle Konfigurationen geloescht (was nicht sein darf)
-    			if($konf_neu==0)
+    			if ($konf_neu === 0)
     			{
     				$gMessage->show($gL10n->get('PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG'));
     			}
@@ -107,7 +105,6 @@ case 1:
             	
        	case 'options':
  	        	$pPreferences->config['Optionen']['config_default'] = $_POST['config_default'];	
-
             	break;  
             	              
         	case 'plugin_control':
@@ -150,8 +147,8 @@ case 2:
     // show form
     $form = new HtmlForm('deinstallation_form', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences_function.php?mode=3', $page);
     $radioButtonEntries = array('0' => $gL10n->get('PLG_KATEGORIEREPORT_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_KATEGORIEREPORT_DEINST_ALLORG') );
-    $form->addRadioButton('deinst_org_select',$gL10n->get('PLG_KATEGORIEREPORT_ORG_CHOICE'),$radioButtonEntries);    
-    $form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), array('icon' => THEME_URL .'/icons/delete.png', 'class' => ' col-sm-offset-3'));
+    $form->addRadioButton('deinst_org_select',$gL10n->get('PLG_KATEGORIEREPORT_ORG_CHOICE'), $radioButtonEntries);    
+    $form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), array('icon' => THEME_URL .'/icons/delete.png', 'class' => 'col-sm-offset-3'));
     
     // add form to html page and show page
     $page->addHtml($form->show(false));

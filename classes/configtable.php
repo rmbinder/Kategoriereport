@@ -26,37 +26,37 @@
      	
 class ConfigTablePKR
 {
-	public	  $config		= array();     ///< Array mit allen Konfigurationsdaten
+	public $config = array();     ///< Array mit allen Konfigurationsdaten
 
 	protected $table_name;
-	protected static $shortcut =  'PKR';
-	protected static $version ;
+	protected static $shortcut = 'PKR';
+	protected static $version;
 	protected static $stand;
 	protected static $dbtoken;
 	
-	public $config_default= array();	
+	public $config_default = array();	
 	
     /**
      * ConfigTablePKR constructor
      */
 	public function __construct()
 	{
-		global  $gDb, $gCurrentOrganization, $g_tbl_praefix;
+		global $gDb, $gCurrentOrganization, $g_tbl_praefix;
 
 		require_once(__DIR__ . '/../version.php');
 		include(__DIR__ . '/../configdata.php');
 		
 		$this->table_name = $g_tbl_praefix.'_plugin_preferences';
 
-		if(isset($plugin_version))
+		if (isset($plugin_version))
 		{
 			self::$version = $plugin_version;
 		}
-		if(isset($plugin_stand))
+		if (isset($plugin_stand))
 		{
 			self::$stand = $plugin_stand;
 		}
-		if(isset($dbtoken))
+		if (isset($dbtoken))
 		{
 			self::$dbtoken = $dbtoken;
 		}
@@ -116,9 +116,9 @@ class ConfigTablePKR
 		$config_ist = $this->config;
 
 		// die Default-config durchlaufen
-		foreach($this->config_default as $section => $sectiondata)
+		foreach ($this->config_default as $section => $sectiondata)
     	{
-        	foreach($sectiondata as $key => $value)
+        	foreach ($sectiondata as $key => $value)
         	{
         		// gibt es diese Sektion bereits in der config?
         		if (isset($config_ist[$section][$key]))
@@ -129,11 +129,11 @@ class ConfigTablePKR
         		else
         		{
         			// wenn nicht, diese Sektion in der config anlegen und mit den Standardwerten aus der Soll-config befuellen
-        			$this->config[$section][$key]=$value;
+        			$this->config[$section][$key] = $value;
         		}
         	}
         	// leere Abschnitte (=leere Arrays) loeschen
-        	if ((isset($config_ist[$section]) && count($config_ist[$section])==0))
+        	if ((isset($config_ist[$section]) && count($config_ist[$section]) == 0))
         	{
         		unset($config_ist[$section]);
         	}
@@ -143,9 +143,9 @@ class ConfigTablePKR
     	// jetzt befinden sich hier nur noch die DB-Eintraege, die nicht verwendet werden und deshalb: 
     	// 1. in der DB geloescht werden koennen
     	// 2. in der normalen config geloescht werden koennen
-		foreach($config_ist as $section => $sectiondata)
+		foreach ($config_ist as $section => $sectiondata)
     	{
-    		foreach($sectiondata as $key => $value)
+    		foreach ($sectiondata as $key => $value)
         	{
         		$plp_name = self::$shortcut.'__'.$section.'__'.$key;
 				$sql = 'DELETE FROM '.$this->table_name.'
@@ -155,7 +155,7 @@ class ConfigTablePKR
 				unset($this->config[$section][$key]);
         	}
 			// leere Abschnitte (=leere Arrays) loeschen
-        	if (count($this->config[$section])==0)
+        	if (count($this->config[$section]) === 0)
         	{
         		unset($this->config[$section]);
         	}
@@ -173,9 +173,9 @@ class ConfigTablePKR
 	{
     	global $gDb, $gCurrentOrganization;
     
-    	foreach($this->config as $section => $sectiondata)
+    	foreach ($this->config as $section => $sectiondata)
     	{
-        	foreach($sectiondata as $key => $value)
+        	foreach ($sectiondata as $key => $value)
         	{
             	if (is_array($value))
             	{
@@ -195,7 +195,7 @@ class ConfigTablePKR
 
             	// Gibt es den Datensatz bereits?
             	// wenn ja: UPDATE des bestehende Datensatzes  
-            	if(isset($row->plp_id) AND strlen($row->plp_id) > 0)
+            	if (isset($row->plp_id) AND strlen($row->plp_id) > 0)
             	{
                 	$sql = 'UPDATE '.$this->table_name.' 
                 			SET plp_value = \''.$value.'\' 
@@ -222,21 +222,21 @@ class ConfigTablePKR
 	{
     	global $gDb, $gCurrentOrganization;
      
-		$sql = ' SELECT plp_id, plp_name, plp_value
+		$sql = 'SELECT plp_id, plp_name, plp_value
              	FROM '.$this->table_name.'
              	WHERE plp_name LIKE \''.self::$shortcut.'__%\'
              	AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  	OR plp_org_id IS NULL ) ';
 		$statement = $gDb->query($sql);
 	
-		while($row = $statement->fetch())
+		while ($row = $statement->fetch())
 		{
 			$array = explode('__',$row['plp_name']);
 		
 			// wenn plp_value von ((  )) eingeschlossen ist, dann ist es als Array einzulesen
-			if ((substr($row['plp_value'],0,2)=='((' ) && (substr($row['plp_value'],-2)=='))' ))
-        	{
-        		$row['plp_value'] = substr($row['plp_value'],2,-2);
+			if ((substr($row['plp_value'], 0, 2) == '((' ) && (substr($row['plp_value'], -2) == '))' ))
+        	{                                                                          
+        		$row['plp_value'] = substr($row['plp_value'], 2, -2);
         		$this->config[$array[1]] [$array[2]] = explode(self::$dbtoken,$row['plp_value']); 
         	}
         	else 
@@ -272,7 +272,7 @@ class ConfigTablePKR
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: version)
-    		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$version)
+    		if (!isset($row->plp_value) || strlen($row->plp_value) === 0 || $row->plp_value<>self::$version)
     		{
     			$ret = true;    
     		}
@@ -288,7 +288,7 @@ class ConfigTablePKR
     		$row = $statement->fetchObject();
 
     		// Vergleich Version.php  ./. DB (hier: stand)
-    		if(!isset($row->plp_value) || strlen($row->plp_value) == 0 || $row->plp_value<>self::$stand)
+    		if (!isset($row->plp_value) || strlen($row->plp_value) === 0 || $row->plp_value<>self::$stand)
     		{
     			$ret = true;    
     		}
@@ -309,18 +309,18 @@ class ConfigTablePKR
 	{
     	global $gDb, $gCurrentOrganization,$gL10n;
  	
-    	$result = '';		
-		$result_data=false;
-		$result_db = false;
+    	$result      = '';		
+		$result_data = false;
+		$result_db   = false;
 		
-		if($deinst_org_select==0)                    //0 = Daten nur in aktueller Org loeschen 
+		if ($deinst_org_select == 0)                    //0 = Daten nur in aktueller Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
         			WHERE plp_name LIKE \''.self::$shortcut.'__%\'
         			AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
 			$result_data = $gDb->query($sql);		
 		}
-		elseif ($deinst_org_select==1)              //1 = Daten in allen Org loeschen 
+		elseif ($deinst_org_select == 1)              //1 = Daten in allen Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
         			WHERE plp_name LIKE \''.self::$shortcut.'__%\' ';
@@ -331,7 +331,7 @@ class ConfigTablePKR
 		$sql = 'SELECT * FROM '.$this->table_name.' ';
 		$statement = $gDb->query($sql);
 
-    	if($statement->rowCount() ==0)
+    	if ($statement->rowCount() == 0)
     	{
         	$sql = 'DROP TABLE '.$this->table_name.' ';
         	$result_db = $gDb->query($sql);
