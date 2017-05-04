@@ -108,9 +108,14 @@ case 1:
             	break;  
             	              
         	case 'plugin_control':
-            	unset($pPreferences->config['Pluginfreigabe']);
-    			$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
-    			$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
+        		if (isset($_POST['freigabe']))
+        		{
+        			$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
+        		}
+        		if (isset($_POST['freigabe_config']))
+        		{
+        			$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
+        		}
             	break;
             
         	default:
