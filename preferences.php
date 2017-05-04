@@ -1,7 +1,7 @@
 <?php
 /**
  ***********************************************************************************************
- * Modul Preferences (Einstellungen) für das Admidio-Plugin Kategoriereport
+ * Modul Preferences (Einstellungen) fuer das Admidio-Plugin Kategoriereport
  *
  * @copyright 2004-2016 The Admidio Team
  * @see http://www.admidio.org/

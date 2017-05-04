@@ -37,7 +37,7 @@ class GenReport
     }
 
     /**
-     * Erzeugt die Arrays listData und headerData für den Report
+     * Erzeugt die Arrays listData und headerData fuer den Report
      * @return void
      */
 	public function generate_listData()
@@ -53,7 +53,7 @@ class GenReport
 		foreach ($colfields as $key => $data)
         {
         	// das ist nur zur Ueberpruefung, ob diese Freigabe noch existent ist
-            // es koennte u.U. ja sein, daß ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
+            // es koennte u.U. ja sein, dass ein Profilfeld oder eine Rolle seit der letzten Speicherung geloescht wurde
         	$found = $this->isInHeaderSelection($data);
             if ($found == 0)
             {
