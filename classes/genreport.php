@@ -287,7 +287,7 @@ class GenReport
         $categories = array();   
         
         $i 	= 1;
-        foreach ($gProfileFields->mProfileFields as $field)
+        foreach ($gProfileFields->getProfileFields() as $field)
         {               
             if ($field->getValue('usf_hidden') == 0 || $gCurrentUser->editUsers())
             {   
