@@ -21,7 +21,7 @@ $config_default['Pluginfreigabe']['freigabe_config'] = array(getRole_IDPKR($gL10
 $config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('PLG_KATEGORIEREPORT_PATTERN')),
 											'col_fields' 	=> array(	'p'.$gProfileFields->getProperty('FIRST_NAME', 'usf_id').','.
 																		'p'.$gProfileFields->getProperty('LAST_NAME', 'usf_id').','.
-																		'p'.$gProfileFields->getProperty('ADDRESS', 'usf_id').','.
+																		'p'.$gProfileFields->getProperty('STREET', 'usf_id').','.
 																		'p'.$gProfileFields->getProperty('CITY', 'usf_id')),
 											'col_yes'		=> array('ja'),
 											'col_no'		=> array('nein'),

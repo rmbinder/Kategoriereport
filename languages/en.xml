@@ -9,7 +9,7 @@
     <string name="PLG_KATEGORIEREPORT_COLUMN">Column</string>
     <string name="PLG_KATEGORIEREPORT_COLUMNS">Columns</string>
     <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION">Column selection</string>
-    <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION_DESC">Selects the columns that are to be displayed in the list.\n\nInactive roles are marked with (*).\n Invisible roles are marked with (!).</string>
+    <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION_DESC">Selects the columns that are to be displayed in the list.\n\nInactive roles are marked with (*).</string>
     <string name="PLG_KATEGORIEREPORT_COL_DESC">Name</string>
     <string name="PLG_KATEGORIEREPORT_COL_DESC_DESC">The bearing is here will appear in the display selection menu "Configuration selection ...".\n\nA configuration can be deleted by the contents of the field name is deleted.</string>
     <string name="PLG_KATEGORIEREPORT_CONFIGURATION">Configuration</string>

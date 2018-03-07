@@ -9,7 +9,7 @@
     <string name="PLG_KATEGORIEREPORT_COLUMN">Spalte</string>
     <string name="PLG_KATEGORIEREPORT_COLUMNS">Spalten</string>
     <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION">Spaltenauswahl</string>
-    <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION_DESC">Wählt die Spalten aus, die in der Liste angezeigt werden sollen.\n\n Inaktive Rollen sind mit (*) gekennzeichnet.\nUnsichtbare Rollen sind mit (!) gekennzeichnet.</string>
+    <string name="PLG_KATEGORIEREPORT_COLUMN_SELECTION_DESC">Wählt die Spalten aus, die in der Liste angezeigt werden sollen.\n\n Inaktive Rollen sind mit (*) gekennzeichnet.</string>
     <string name="PLG_KATEGORIEREPORT_COL_DESC">Bezeichnung</string>
     <string name="PLG_KATEGORIEREPORT_COL_DESC_DESC">Die hier eingetragende Bezeichnung erscheint in der Bildschirmanzeige im Auswahlmenü "Konfiguration wählen...".\n\nEine Konfiguration kann gelöscht werden, indem der Inhalt des Feldes Bezeichnung gelöscht wird.</string>
     <string name="PLG_KATEGORIEREPORT_CONFIGURATION">Konfiguration</string>

@@ -330,7 +330,7 @@ class GenReport
 			$this->headerSelection[$i]['data']	   = $data['data'];
 			$i++;
 
-       		$sql = 'SELECT DISTINCT rol.rol_name, rol.rol_id, rol.rol_valid, rol.rol_visible
+       		$sql = 'SELECT DISTINCT rol.rol_name, rol.rol_id, rol.rol_valid
                 	FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
                 	WHERE cat.cat_id = \''.$data['cat_id'].'\'
                 	AND cat.cat_id = rol.rol_cat_id';
@@ -339,12 +339,9 @@ class GenReport
         	while ($row = $statement->fetch())
         	{
         		$marker = '';
-        		if ($row['rol_valid'] == 0 || $row['rol_visible'] == 0)
+        		if ($row['rol_valid'] == 0 )
         		{
-        			$marker = ' (';
-        			$marker .= ($row['rol_valid'] == 0 ? '*' : '');
-        			$marker .= ($row['rol_visible'] == 0 ? '!' : '');
-        			$marker .= ')';
+        			$marker = ' (' .  ($row['rol_valid'] == 0 ? '*' : '') . ')';
         		}
         			
         		$this->headerSelection[$i]['id']   	   = 'r'.$row['rol_id'];       //r wie role
