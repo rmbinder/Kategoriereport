@@ -2,7 +2,7 @@
 /**
  * Zeigt im Menue Einstellungen ein Popup-Fenster mit Hinweisen an
  *
- * @copyright 2004-2017 The Admidio Team
+ * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -12,6 +12,12 @@
  */
 
 require_once(__DIR__ . '/../../adm_program/system/common.php');
+
+// only authorized user are allowed to start this module
+if (!$gCurrentUser->isAdministrator())
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
 
 // set headline of the script
 $headline = $gL10n->get('PLG_KATEGORIEREPORT_CONFIGURATIONS');

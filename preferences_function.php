@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Verarbeiten der Einstellungen des Admidio-Plugins Kategoriereport
  * 
- * @copyright 2004-2017 The Admidio Team
+ * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  * 
@@ -21,15 +21,14 @@ require_once(__DIR__ . '/../../adm_program/system/common.php');
 require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 
+// only authorized user are allowed to start this module
+if (!$gCurrentUser->isAdministrator())
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
+
 $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
-
-// only authorized user are allowed to start this module
-if (!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-}
 
 // Initialize and check the parameters
 $getMode = admFuncVariableIsValid($_GET, 'mode', 'numeric', array('defaultValue' => 1));
@@ -103,20 +102,9 @@ case 1:
     			}
             	break; 
             	
-       	case 'options':
+       		case 'options':
  	        	$pPreferences->config['Optionen']['config_default'] = $_POST['config_default'];	
             	break;  
-            	              
-        	case 'plugin_control':
-        		if (isset($_POST['freigabe']))
-        		{
-        			$pPreferences->config['Pluginfreigabe']['freigabe'] = $_POST['freigabe'];
-        		}
-        		if (isset($_POST['freigabe_config']))
-        		{
-        			$pPreferences->config['Pluginfreigabe']['freigabe_config'] = $_POST['freigabe_config'];
-        		}
-            	break;
             
         	default:
            		$gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));

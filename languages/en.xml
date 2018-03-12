@@ -36,22 +36,19 @@
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN_DESC">Allows the documentation of the plugin can be opened (An existing Internet connection is required because the data is located on admidio.org).</string>
     <string name="PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG">ERROR: At least one configuration to be present!</string>
     <string name="PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION">Skip to uninstall</string>
+    <string name="PLG_KATEGORIEREPORT_MENU_URL_ERROR">The authorization check of the plugin failed. There is more than one menu item with the same URL defined.\n\n=> #VAR1_BOLD#</string> 
     <string name="PLG_KATEGORIEREPORT_NUMBER_COL">Number (Column)</string> 
     <string name="PLG_KATEGORIEREPORT_NUMBER_COL_DESC">The respective checkbox has to be activated if you want to display at the end of the report a line with the number of memberships.</string>
     <string name="PLG_KATEGORIEREPORT_NUMBER_ROW">Number (Row)</string>       
     <string name="PLG_KATEGORIEREPORT_OPTIONS">Options</string>
     <string name="PLG_KATEGORIEREPORT_ORG_CHOICE">Organizational choice</string>
     <string name="PLG_KATEGORIEREPORT_PATTERN">Example configuration</string>
-    <string name="PLG_KATEGORIEREPORT_PLUGIN_CONTROL">Enabling plug-in</string>
     <string name="PLG_KATEGORIEREPORT_PLUGIN_DATE">Situation</string>
     <string name="PLG_KATEGORIEREPORT_PLUGIN_INFORMATION">Plug-in informations</string>
     <string name="PLG_KATEGORIEREPORT_PLUGIN_NAME">Plug-in name</string>
     <string name="PLG_KATEGORIEREPORT_PLUGIN_VERSION">Version</string>
     <string name="PLG_KATEGORIEREPORT_ROLEOMEMBERSHIPS">Role memberships</string>
     <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION">Role selection</string>
-    <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_CONF_DESC">About roll select a configuration may be restricted to members of the selected roles.\n\n There should be no restriction, so both fields (role selection and category selection) are to be left blank.</string>
-    <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC">Choose from the rollers, whose members may call the plugin.</string>
-    <string name="PLG_KATEGORIEREPORT_ROLE_SELECTION_DESC2">Choose from the rollers, whose members may access the settings of the plugin.</string>
     <string name="PLG_KATEGORIEREPORT_SELECT_CONFIGURATION">Configuration selection</string>
     <string name="PLG_KATEGORIEREPORT_SETTINGS">Settings</string>
     <string name="PLG_KATEGORIEREPORT_WITHOUT">without</string>       

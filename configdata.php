@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Konfigurationsdaten fuer das Admidio-Plugin Kategoriereport
  *
- * @copyright 2004-2017 The Admidio Team
+ * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -13,10 +13,6 @@
 global $gL10n, $gProfileFields;
 
 //Standardwerte einer Neuinstallation oder beim Anfuegen einer zusaetzlichen Konfiguration
-$config_default['Pluginfreigabe']['freigabe']        = array(getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
-													         getRole_IDPKR($gL10n->get('SYS_MEMBER')));
-$config_default['Pluginfreigabe']['freigabe_config'] = array(getRole_IDPKR($gL10n->get('SYS_ADMINISTRATOR')),
-															 getRole_IDPKR($gL10n->get('SYS_MEMBER')));
 
 $config_default['Konfigurationen'] = array(	'col_desc' 		=> array($gL10n->get('PLG_KATEGORIEREPORT_PATTERN')),
 											'col_fields' 	=> array(	'p'.$gProfileFields->getProperty('FIRST_NAME', 'usf_id').','.

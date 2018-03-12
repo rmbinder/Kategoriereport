@@ -11,7 +11,7 @@
  *
  * Compatible with Admidio version 3.3
  *
- * @copyright 2004-2017 The Admidio Team
+ * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *   
@@ -29,10 +29,14 @@ require_once(__DIR__ . '/common_function.php');
 require_once(__DIR__ . '/classes/configtable.php');
 require_once(__DIR__ . '/classes/genreport.php');
 
-$plugin_folder = '/'.substr(__DIR__,strrpos(__DIR__,DIRECTORY_SEPARATOR)+1);
-
 // Einbinden der Sprachdatei
 $gL10n->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
+
+// only authorized user are allowed to start this module
+if (!isUserAuthorized($_SERVER['SCRIPT_NAME']))
+{
+	$gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+}
 
 // Konfiguration einlesen          
 $pPreferences = new ConfigTablePKR();
@@ -43,13 +47,6 @@ if ($pPreferences->checkforupdate())
 else
 {
 	$pPreferences->read();
-}
-
-// only authorized user are allowed to start this module
-if (!check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe']))
-{
-	$gMessage->setForwardUrl($gHomepage, 3000);
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
 }
 
 // Initialize and check the parameters
@@ -259,7 +256,7 @@ if ($getMode != 'csv')
         
         $listsMenu->addForm($form->show(false));
         
-        if (check_showpluginPKR($pPreferences->config['Pluginfreigabe']['freigabe_config']))
+        if ($gCurrentUser->isAdministrator())
 		{
     		// show link to pluginpreferences 
     		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
