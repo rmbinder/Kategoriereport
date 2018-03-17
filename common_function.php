@@ -38,7 +38,9 @@ function getRole_IDPKR($role_name)
 }
 
 /**
- * Funktion prueft, ob der Nutzer berechtigt ist das Plugin aufzurufen
+ * Funktion prueft, ob der Nutzer berechtigt ist das Plugin aufzurufen.
+ * Zur Prüfung werden die Einstellungen von 'Modulrechte' und 'Sichtbar für' 
+ * verwendet, die im Modul Menü für dieses Plugin gesetzt wurden.
  * @param   string  $scriptName   Der Scriptname des Plugins
  * @return  bool    true, wenn der User berechtigt ist
  */
@@ -67,12 +69,12 @@ function isUserAuthorized($scriptName)
 		}
 	}
 	
-	$sql = 'SELECT men_id, men_com_id, men_name_intern, men_name, men_description, men_url, men_icon, com_name_intern
-                  FROM '.TBL_MENU.'
-             LEFT JOIN '.TBL_COMPONENTS.'
-                    ON com_id = men_com_id
-                 WHERE men_id = ? -- $menId
-              ORDER BY men_men_id_parent DESC, men_order';
+	$sql = 'SELECT men_id, men_com_id, com_name_intern
+              FROM '.TBL_MENU.'
+         LEFT JOIN '.TBL_COMPONENTS.'
+                ON com_id = men_com_id
+             WHERE men_id = ? -- $menId
+          ORDER BY men_men_id_parent DESC, men_order';
 	
 	$menuStatement = $gDb->queryPrepared($sql, array($menId));
 	while ($row = $menuStatement->fetch())
@@ -119,52 +121,6 @@ function check_languagePKR($field_name)
     return $ret;
 }
  
-/**
- * Funktion prueft, ob ein User Angehoeriger einer bestimmten Rolle ist
- *
- * @param   int  $role_id   ID der zu pruefenden Rolle
- * @param   int  $user_id [optional]  ID des Users, fuer den die Mitgliedschaft geprueft werden soll;
- * 										ohne Uebergabe wird für den aktuellen User geprueft
- * @return  bool
- */
-function hasRole_IDPKR($role_id, $user_id = 0)
-{
-    global $gCurrentUser, $gDb, $gCurrentOrganization;
-
-    if ($user_id === 0)
-    {
-        $user_id = $gCurrentUser->getValue('usr_id');
-    }
-    elseif (is_numeric($user_id) == false)
-    {
-        return -1;
-    }
-
-    $sql    = 'SELECT mem_id
-                 FROM '. TBL_MEMBERS. ', '. TBL_ROLES. ', '. TBL_CATEGORIES. '
-                WHERE mem_usr_id = '.$user_id.'
-                  AND mem_begin <= \''.DATE_NOW.'\'
-                  AND mem_end    > \''.DATE_NOW.'\'
-                  AND mem_rol_id = rol_id
-                  AND rol_id   = \''.$role_id.'\'
-                  AND rol_valid  = 1 
-                  AND rol_cat_id = cat_id
-                  AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                   OR cat_org_id IS NULL ) ';
-                
-    $statement = $gDb->query($sql);
-
-    $user_found = $statement->rowCount();
-
-    if ($user_found === 1)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
 
 /**
  * Funktion prueft, ob ein User Angehoeriger einer bestimmten Kategorie ist
@@ -173,7 +129,7 @@ function hasRole_IDPKR($role_id, $user_id = 0)
  * @param   int  $user_id   ID des Users, fuer den die Mitgliedschaft geprueft werden soll
  * @return  bool
  */
-function hasCategorie_IDPKR($cat_id, $user_id = 0)
+function isMemberOfCategorie($cat_id, $user_id = 0)
 {
     global $gCurrentUser, $gDb, $gCurrentOrganization;
 

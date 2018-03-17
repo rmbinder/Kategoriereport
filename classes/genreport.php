@@ -14,7 +14,7 @@
  *
  * Folgende Methoden stehen zur Verfuegung:
  *
- * generate_listData()					-	perzeugt die Arrays listData und headerData für den Report
+ * generate_listData()					-	erzeugt die Arrays listData und headerData für den Report
  * generate_headerSelection() 			- 	erzeugt die Auswahlliste für die Spaltenauswahl
  * isInheaderSelection($search_value)	-	liest die Konfigurationsdaten aus der Datenbank
  *
@@ -84,15 +84,15 @@ class GenReport
         		case 'c':                    //c=categorie
         			
         			$sql = 'SELECT DISTINCT mem_usr_id
-             				FROM '.TBL_MEMBERS.', '.TBL_CATEGORIES.', '.TBL_ROLES.' 
-             				WHERE cat_type = \'ROL\' 
-             				AND cat_id = rol_cat_id
-             				AND mem_rol_id = rol_id
-             				AND mem_begin <= \''.DATE_NOW.'\'
-           					AND mem_end    > \''.DATE_NOW.'\'
-             				AND cat_id = \''.$id.'\'
-             				AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-               				OR cat_org_id IS NULL )';
+             				           FROM '.TBL_MEMBERS.', '.TBL_CATEGORIES.', '.TBL_ROLES.' 
+             				          WHERE cat_type = \'ROL\' 
+             				            AND cat_id = rol_cat_id
+             				            AND mem_rol_id = rol_id
+             				            AND mem_begin <= \''.DATE_NOW.'\'
+           					            AND mem_end    > \''.DATE_NOW.'\'
+             				            AND cat_id = \''.$id.'\'
+             				            AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+               				             OR cat_org_id IS NULL )';
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
@@ -104,11 +104,11 @@ class GenReport
         		case 'r':                    //r=role
 
         			$sql = 'SELECT mem_usr_id
-             				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
-             				WHERE mem_rol_id = rol_id
-             				AND mem_begin <= \''.DATE_NOW.'\'
-           					AND mem_end    > \''.DATE_NOW.'\'
-             				AND rol_id = \''.$id.'\' ';
+             				  FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
+             				 WHERE mem_rol_id = rol_id
+             				   AND mem_begin <= \''.DATE_NOW.'\'
+           					   AND mem_end    > \''.DATE_NOW.'\'
+             				   AND rol_id = \''.$id.'\' ';
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
@@ -120,12 +120,12 @@ class GenReport
         		case 'w':                    //w=without (Leader)
 
         			$sql = 'SELECT mem_usr_id
-             				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
-             				WHERE mem_rol_id = rol_id
-             				AND mem_begin <= \''.DATE_NOW.'\'
-           					AND mem_end    > \''.DATE_NOW.'\'
-             				AND rol_id = \''.$id.'\' 
-             				AND mem_leader = 0 ';
+             				  FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
+             				 WHERE mem_rol_id = rol_id
+             				   AND mem_begin <= \''.DATE_NOW.'\'
+           					   AND mem_end    > \''.DATE_NOW.'\'
+             				   AND rol_id = \''.$id.'\' 
+             				   AND mem_leader = 0 ';
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
@@ -137,12 +137,12 @@ class GenReport
         		case 'l':                    //l=leader
         			
         			$sql = 'SELECT mem_usr_id
-             				FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
-             				WHERE mem_rol_id = rol_id
-             				AND mem_begin <= \''.DATE_NOW.'\'
-           					AND mem_end    > \''.DATE_NOW.'\'
-             				AND rol_id = \''.$id.'\' 
-             				AND mem_leader = 1 ';
+             				  FROM '.TBL_MEMBERS.', '.TBL_ROLES.' 
+             				 WHERE mem_rol_id = rol_id
+             				   AND mem_begin <= \''.DATE_NOW.'\'
+           					   AND mem_end    > \''.DATE_NOW.'\'
+             				   AND rol_id = \''.$id.'\' 
+             				   AND mem_leader = 1 ';
 					$statement = $gDb->query($sql);
 
 					while ($row = $statement->fetch())
@@ -169,14 +169,14 @@ class GenReport
         
 		// alle Mitglieder der aktuellen Organisation einlesen
 		$sql = ' SELECT mem_usr_id
-             	FROM '.TBL_MEMBERS.', '.TBL_ROLES.', '.TBL_CATEGORIES. ' 
-             	WHERE mem_rol_id = rol_id
-             	AND rol_valid  = 1   
-             	AND rol_cat_id = cat_id
-             	AND (  cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-               		OR cat_org_id IS NULL )
-             	AND mem_begin <= \''.DATE_NOW.'\'
-           		AND mem_end    > \''.DATE_NOW.'\' ';
+             	   FROM '.TBL_MEMBERS.', '.TBL_ROLES.', '.TBL_CATEGORIES. ' 
+             	  WHERE mem_rol_id = rol_id
+             	    AND rol_valid  = 1   
+             	    AND rol_cat_id = cat_id
+             	    AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+               		 OR cat_org_id IS NULL )
+             	    AND mem_begin <= \''.DATE_NOW.'\'
+           		    AND mem_end    > \''.DATE_NOW.'\' ';
 		
 		$statement = $gDb->query($sql);
 		while ($row = $statement->fetch())
@@ -190,6 +190,7 @@ class GenReport
     	foreach ($this->listData as $member => $dummy)
 		{     	
 			$user->readDataById($member);
+			$memberShips = $user->getRoleMemberships();
 			$number_row_count = 0;
 	   		
 			// bestehen Rollen- und/oder Kategorieeinschraenkungen?
@@ -200,14 +201,14 @@ class GenReport
         		$rolecatmarker = false;	
         		foreach (explode(',', $pPreferences->config['Konfigurationen']['selection_role'][$this->conf]) as $rol)
         		{
-        			if (hasRole_IDPKR($rol, $member))
+        			if ($user->isMemberOfRole((int) $rol))
         			{
         				$rolecatmarker = true;
         			}
         		}	
 				foreach (explode(',', $pPreferences->config['Konfigurationen']['selection_cat'][$this->conf]) as $cat)
         		{
-        			if (hasCategorie_IDPKR($cat, $member))
+        			if (isMemberOfCategorie($cat, $member))
         			{
         				$rolecatmarker = true;
         			}
@@ -236,7 +237,6 @@ class GenReport
 				elseif ($data['type'] == 'a')              //Sonderfall: Rollengesamtuebersicht erstellen
 				{
 					$role = new TableRoles($gDb);
-					$memberShips = $user->getRoleMemberships();
 					
 					$this->listData[$member][$key] = '';
 					foreach ($memberShips as $rol_id)
@@ -300,11 +300,11 @@ class GenReport
         
 		// alle (Rollen-)Kategorien der aktuellen Organisation einlesen
 		$sql = ' SELECT DISTINCT cat.cat_name, cat.cat_id
-             	FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
-             	WHERE cat.cat_type = \'ROL\' 
-             	AND cat.cat_id = rol.rol_cat_id
-             	AND (  cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
-               	OR cat.cat_org_id IS NULL )';
+             	            FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
+             	           WHERE cat.cat_type = \'ROL\' 
+             	             AND cat.cat_id = rol.rol_cat_id
+             	             AND ( cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+               	              OR cat.cat_org_id IS NULL )';
 	
 		$statement = $gDb->query($sql);
 
@@ -331,9 +331,9 @@ class GenReport
 			$i++;
 
        		$sql = 'SELECT DISTINCT rol.rol_name, rol.rol_id, rol.rol_valid
-                	FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
-                	WHERE cat.cat_id = \''.$data['cat_id'].'\'
-                	AND cat.cat_id = rol.rol_cat_id';
+                	           FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
+                	          WHERE cat.cat_id = \''.$data['cat_id'].'\'
+                	            AND cat.cat_id = rol.rol_cat_id';
     		$statement = $gDb->query($sql);
     		
         	while ($row = $statement->fetch())

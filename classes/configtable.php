@@ -69,7 +69,7 @@ class ConfigTablePKR
      */
 	public function init()
 	{
-		global $gL10n, $gDb, $gCurrentOrganization,$gProfileFields;
+		global $gL10n, $gDb, $gCurrentOrganization, $gProfileFields;
 	
 		$config_ist = array();
 		
@@ -149,8 +149,8 @@ class ConfigTablePKR
         	{
         		$plp_name = self::$shortcut.'__'.$section.'__'.$key;
 				$sql = 'DELETE FROM '.$this->table_name.'
-        				WHERE plp_name = \''.$plp_name.'\' 
-        				AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
+        				      WHERE plp_name = \''.$plp_name.'\' 
+        				        AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
 				$gDb->query($sql);
 				unset($this->config[$section][$key]);
         	}
@@ -186,10 +186,10 @@ class ConfigTablePKR
   				$plp_name = self::$shortcut.'__'.$section.'__'.$key;
           
             	$sql = ' SELECT plp_id 
-            			FROM '.$this->table_name.' 
-            			WHERE plp_name = \''.$plp_name.'\' 
-            			AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
-                 		OR plp_org_id IS NULL ) ';
+            			   FROM '.$this->table_name.' 
+            			  WHERE plp_name = \''.$plp_name.'\' 
+            			    AND ( plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                 		     OR plp_org_id IS NULL ) ';
             	$statement = $gDb->query($sql);
             	$row = $statement->fetchObject();
 
@@ -198,8 +198,8 @@ class ConfigTablePKR
             	if (isset($row->plp_id) AND strlen($row->plp_id) > 0)
             	{
                 	$sql = 'UPDATE '.$this->table_name.' 
-                			SET plp_value = \''.$value.'\' 
-                			WHERE plp_id = '.$row->plp_id;   
+                			   SET plp_value = \''.$value.'\' 
+                			 WHERE plp_id = '.$row->plp_id;   
                     
                 	$gDb->query($sql);           
             	}
@@ -223,9 +223,9 @@ class ConfigTablePKR
     	global $gDb, $gCurrentOrganization;
      
 		$sql = 'SELECT plp_id, plp_name, plp_value
-             	FROM '.$this->table_name.'
-             	WHERE plp_name LIKE \''.self::$shortcut.'__%\'
-             	AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+             	  FROM '.$this->table_name.'
+             	 WHERE plp_name LIKE \''.self::$shortcut.'__%\'
+             	   AND ( plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  	OR plp_org_id IS NULL ) ';
 		$statement = $gDb->query($sql);
 	
@@ -264,9 +264,9 @@ class ConfigTablePKR
 			$plp_name = self::$shortcut.'__Plugininformationen__version';
           
     		$sql = 'SELECT plp_value 
-            		FROM '.$this->table_name.' 
-            		WHERE plp_name = \''.$plp_name.'\' 
-            		AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+            		  FROM '.$this->table_name.' 
+            		 WHERE plp_name = \''.$plp_name.'\' 
+            		   AND ( plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
             	    	OR plp_org_id IS NULL ) ';
     		$statement = $gDb->query($sql);
     		$row = $statement->fetchObject();
@@ -280,9 +280,9 @@ class ConfigTablePKR
     		$plp_name = self::$shortcut.'__Plugininformationen__stand';
           
     		$sql = 'SELECT plp_value 
-            		FROM '.$this->table_name.' 
-            		WHERE plp_name = \''.$plp_name.'\' 
-            		AND (  plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
+            		  FROM '.$this->table_name.' 
+            		 WHERE plp_name = \''.$plp_name.'\' 
+            		   AND ( plp_org_id = '.$gCurrentOrganization->getValue('org_id').'
                  		OR plp_org_id IS NULL ) ';
     		$statement = $gDb->query($sql);
     		$row = $statement->fetchObject();
@@ -316,14 +316,14 @@ class ConfigTablePKR
 		if ($deinst_org_select == 0)                    //0 = Daten nur in aktueller Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
-        			WHERE plp_name LIKE \''.self::$shortcut.'__%\'
-        			AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
+        			      WHERE plp_name LIKE \''.self::$shortcut.'__%\'
+        			        AND plp_org_id = '.$gCurrentOrganization->getValue('org_id').' ';
 			$result_data = $gDb->query($sql);		
 		}
 		elseif ($deinst_org_select == 1)              //1 = Daten in allen Org loeschen 
 		{
 			$sql = 'DELETE FROM '.$this->table_name.'
-        			WHERE plp_name LIKE \''.self::$shortcut.'__%\' ';
+        			      WHERE plp_name LIKE \''.self::$shortcut.'__%\' ';
 			$result_data = $gDb->query($sql);		
 		}
 
