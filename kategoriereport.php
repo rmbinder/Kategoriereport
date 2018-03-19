@@ -30,7 +30,7 @@ require_once(__DIR__ . '/classes/configtable.php');
 require_once(__DIR__ . '/classes/genreport.php');
 
 // Einbinden der Sprachdatei
-$gL10n->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_PLUGINS . $plugin_folder . '/languages');
+$gL10n->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_PLUGINS . PLUGIN_FOLDER . '/languages');
 
 // only authorized user are allowed to start this module
 if (!isUserAuthorized($_SERVER['SCRIPT_NAME']))
@@ -210,18 +210,18 @@ if ($getMode != 'csv')
         $page->addJavascript('
             $("#export_list_to").change(function () {
                 if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport.php?" +
+                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
                         "config='.$getConfig.'&mode=" + $(this).val();
                 }
             });
             $("#configList").change(function () {
             	if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport.php?" +
+                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
                         "mode=html&full_screen='.$getFullScreen.'&config=" + $(this).val();
                 }
             });            
             $("#menu_item_print_view").click(function () {
-                window.open("'. ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport.php?" +
+                window.open("'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
                  "config='.$getConfig.'&mode=print", "_blank");
             });', true);
 
@@ -230,12 +230,12 @@ if ($getMode != 'csv')
         
         if ($getFullScreen == true)
         {
-            $listsMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=0',
+            $listsMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=0',
                 $gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
         }
         else
         {
-            $listsMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=1',
+            $listsMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=1',
                 $gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
         }
         
@@ -259,7 +259,7 @@ if ($getMode != 'csv')
         if ($gCurrentUser->isAdministrator())
 		{
     		// show link to pluginpreferences 
-    		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . $plugin_folder .'/preferences.php',
+    		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',
                         $gL10n->get('PLG_KATEGORIEREPORT_SETTINGS'), 'options.png', 'right');        
 		}
         
