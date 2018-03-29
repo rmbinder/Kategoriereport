@@ -42,7 +42,7 @@ class GenReport
      */
 	public function generate_listData()
 	{
-		global $gDb, $gProfileFields, $gCurrentOrganization, $pPreferences, $gL10n;
+		global $gDb, $gProfileFields, $pPreferences, $gL10n;
 		
 		$workarray      = array();
 		$number_row_pos = -1;
@@ -91,7 +91,7 @@ class GenReport
              				            AND mem_begin <= \''.DATE_NOW.'\'
            					            AND mem_end    > \''.DATE_NOW.'\'
              				            AND cat_id = \''.$id.'\'
-             				            AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+             				            AND ( cat_org_id = '.ORG_ID.'
                				             OR cat_org_id IS NULL )';
 					$statement = $gDb->query($sql);
 
@@ -173,7 +173,7 @@ class GenReport
              	  WHERE mem_rol_id = rol_id
              	    AND rol_valid  = 1   
              	    AND rol_cat_id = cat_id
-             	    AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+             	    AND ( cat_org_id = '.ORG_ID.'
                		 OR cat_org_id IS NULL )
              	    AND mem_begin <= \''.DATE_NOW.'\'
            		    AND mem_end    > \''.DATE_NOW.'\' ';
@@ -282,7 +282,7 @@ class GenReport
      */
 	private function generate_headerSelection()
 	{
-		global $gDb, $gL10n, $gProfileFields, $gCurrentOrganization, $gCurrentUser;
+		global $gDb, $gL10n, $gProfileFields, $gCurrentUser;
 	    
         $categories = array();   
         
@@ -303,7 +303,7 @@ class GenReport
              	            FROM '.TBL_CATEGORIES.' AS cat, '.TBL_ROLES.' AS rol
              	           WHERE cat.cat_type = \'ROL\' 
              	             AND cat.cat_id = rol.rol_cat_id
-             	             AND ( cat.cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+             	             AND ( cat.cat_org_id = '.ORG_ID.'
                	              OR cat.cat_org_id IS NULL )';
 	
 		$statement = $gDb->query($sql);

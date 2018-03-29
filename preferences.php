@@ -284,14 +284,14 @@ $page->addHtml('
                         	$sql = 'SELECT rol_id, rol_name, cat_name
                                 FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.' 
                                 WHERE cat_id = rol_cat_id
-                                AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                AND ( cat_org_id = '.ORG_ID.'
                                 OR cat_org_id IS NULL )';
                        		$form->addSelectBoxFromSql('selection_role'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_ROLE_SELECTION'), $gDb, $sql, array('defaultValue' => explode(',',$pPreferences->config['Konfigurationen']['selection_role'][$conf]),'multiselect' => true));
                         	
 				        	$sql = 'SELECT cat_id, cat_name
                                     FROM '.TBL_CATEGORIES.' , '.TBL_ROLES.' 
                                     WHERE cat_id = rol_cat_id
-                                    AND ( cat_org_id = '.$gCurrentOrganization->getValue('org_id').'
+                                    AND ( cat_org_id = '.ORG_ID.'
                                     OR cat_org_id IS NULL )';
                        		$form->addSelectBoxFromSql('selection_cat'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION'), $gDb, $sql, array('defaultValue' => explode(',',$pPreferences->config['Konfigurationen']['selection_cat'][$conf]),'multiselect' => true));
  							$form->addCheckbox('number_col'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL'), $pPreferences->config['Konfigurationen']['number_col'][$conf]);
