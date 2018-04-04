@@ -312,7 +312,7 @@ $page->addHtml('
  							if($num_configs != 1)
  							{
  								$html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add='.($conf+1).'"><img
-                                        src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_MITGLIEDSBEITRAG_DELETE_CONFIG').'" />'.$gL10n->get('PLG_MITGLIEDSBEITRAG_DELETE_CONFIG').'</a>';
+                                        src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_KATEGORIEREPORT_DELETE_CONFIG').'" />'.$gL10n->get('PLG_KATEGORIEREPORT_DELETE_CONFIG').'</a>';
  								$form->addCustomContent('', $html);
  							}
  							

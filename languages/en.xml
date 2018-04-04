@@ -27,6 +27,7 @@
     <string name="PLG_KATEGORIEREPORT_DEINST_STARTMESSAGE">The following deletions were performed:\n\n</string>
     <string name="PLG_KATEGORIEREPORT_DEINST_TABLE_DELETE_ERROR">- The table "adm_plugin_preferences" could not be deleted because it houses more data from other plugins.\n</string>
     <string name="PLG_KATEGORIEREPORT_DEINST_TABLE_DELETE_SUCCESS">- The created table "adm_plugin_preferences" was deleted.\n</string>
+    <string name="PLG_KATEGORIEREPORT_DELETE_CONFIG">Delete this configuration</string>
     <string name="PLG_KATEGORIEREPORT_DISPLAY_TEXT_MEMBERSHIP_NO">Displayed text in case of no membership</string>
     <string name="PLG_KATEGORIEREPORT_DISPLAY_TEXT_MEMBERSHIP_NO_DESC">Text on no membership in a role or category. \n(e.g. No or False).</string>
     <string name="PLG_KATEGORIEREPORT_DISPLAY_TEXT_MEMBERSHIP_YES">Displayed text in case of membership</string>
