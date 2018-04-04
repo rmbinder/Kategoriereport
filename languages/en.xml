@@ -34,7 +34,6 @@
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION">Documentation</string>
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN">Open documentation</string>
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN_DESC">Allows the documentation of the plugin can be opened (An existing Internet connection is required because the data is located on admidio.org).</string>
-    <string name="PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG">ERROR: At least one configuration to be present!</string>
     <string name="PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION">Skip to uninstall</string>
     <string name="PLG_KATEGORIEREPORT_MENU_URL_ERROR">The authorization check of the plugin failed. There is more than one menu item with the same URL defined.\n\n=> #VAR1_BOLD#</string> 
     <string name="PLG_KATEGORIEREPORT_NUMBER_COL">Number (Column)</string> 

@@ -30,22 +30,36 @@ if (!$gCurrentUser->isAdministrator())
 }
 
 // Initialize and check the parameters
-$getAdd = admFuncVariableIsValid($_GET, 'add', 'boolean', array('defaultValue' => false));
+$getAdd = admFuncVariableIsValid($_GET, 'add', 'numeric', array('defaultValue' => 0));
 
 $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
 
 $headline = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 
-$num_configs = count($pPreferences->config['Konfigurationen']['col_desc']);
-if ($getAdd)
+if ($getAdd === -1)
 {
 	foreach($pPreferences->config['Konfigurationen'] as $key => $dummy)
 	{
-		$pPreferences->config['Konfigurationen'][$key][$num_configs] = $pPreferences->config_default['Konfigurationen'][$key][0];
+		$pPreferences->config['Konfigurationen'][$key][] = $pPreferences->config_default['Konfigurationen'][$key][0];
 	}
-	$num_configs++;
 }
+elseif ($getAdd > 0)
+{
+	foreach($pPreferences->config['Konfigurationen'] as $key => $dummy)
+	{
+		array_splice($pPreferences->config[Konfigurationen][$key], $getAdd-1, 1);
+	}
+	
+	// falls die Standardeinstellung der Konfigurationen die soeben geloeschte Konfig war
+	if ($pPreferences->config['Optionen']['config_default'] ==  $getAdd-1)
+	{
+		$pPreferences->config['Optionen']['config_default'] = 0;
+	}
+	
+}
+$num_configs = count($pPreferences->config['Konfigurationen']['col_desc']);
+$pPreferences->save();
 
 $report = new GenReport();
 
@@ -56,7 +70,7 @@ $page = new HtmlPage($headline);
 $page->enableModal();
 
 // open the module configurations if a new configuration is added 
-if ($getAdd)
+if ($getAdd <> 0)
 {
     $page->addJavascript('$("#tabs_nav_common").attr("class", "active");
         $("#tabs-common").attr("class", "tab-pane active");
@@ -258,7 +272,7 @@ $page->addHtml('
                         for ($conf=0;$conf<$num_configs;$conf++)
 						{
 							$form->openGroupBox('configurations_group',($conf+1).'. '.$gL10n->get('PLG_KATEGORIEREPORT_CONFIGURATION'));
-							$form->addInput('col_desc'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_COL_DESC'), $pPreferences->config['Konfigurationen']['col_desc'][$conf]);
+							$form->addInput('col_desc'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_COL_DESC'), $pPreferences->config['Konfigurationen']['col_desc'][$conf], array('property' => FIELD_REQUIRED));
 							$html = '
 							<div class="table-responsive">
     							<table class="table table-condensed" id="mylist_fields_table">
@@ -295,11 +309,18 @@ $page->addHtml('
                                     OR cat_org_id IS NULL )';
                        		$form->addSelectBoxFromSql('selection_cat'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_CAT_SELECTION'), $gDb, $sql, array('defaultValue' => explode(',',$pPreferences->config['Konfigurationen']['selection_cat'][$conf]),'multiselect' => true));
  							$form->addCheckbox('number_col'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL'), $pPreferences->config['Konfigurationen']['number_col'][$conf]);
-                        	$form->closeGroupBox();
+ 							if($num_configs != 1)
+ 							{
+ 								$html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add='.($conf+1).'"><img
+                                        src="'. THEME_URL . '/icons/delete.png" alt="'.$gL10n->get('PLG_MITGLIEDSBEITRAG_DELETE_CONFIG').'" />'.$gL10n->get('PLG_MITGLIEDSBEITRAG_DELETE_CONFIG').'</a>';
+ 								$form->addCustomContent('', $html);
+ 							}
+ 							
+ 							$form->closeGroupBox();
 						}
                         $form->addDescription('</div>');
                         $form->addLine();
-                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add=true"><img
+                        $html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add=-1"><img
                                     src="'. THEME_URL . '/icons/add.png" alt="'.$gL10n->get('PLG_KATEGORIEREPORT_ADD_ANOTHER_CONFIG').'" />'.$gL10n->get('PLG_KATEGORIEREPORT_ADD_ANOTHER_CONFIG').'</a>';
                         $htmlDesc = '<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
                         $form->addCustomContent('', $html, array('helpTextIdInline' => $htmlDesc));                         

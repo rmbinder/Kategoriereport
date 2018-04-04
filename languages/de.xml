@@ -34,7 +34,6 @@
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION">Dokumentation</string>
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN">Dokumentation öffnen</string>
     <string name="PLG_KATEGORIEREPORT_DOCUMENTATION_OPEN_DESC">Hiermit kann die Dokumentation zum Plugin geöffnet werden (Eine bestehende Internetverbindung wird vorausgesetzt, da sich die Daten auf admidio.org befinden).</string>
-    <string name="PLG_KATEGORIEREPORT_ERROR_MIN_CONFIG">FEHLER: Mindestens eine Konfiguration muss vorhanden sein!</string>
     <string name="PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION">Zur Deinstallation wechseln</string>
     <string name="PLG_KATEGORIEREPORT_MENU_URL_ERROR">Die Authorisierungsprüfung des Plugins ist fehlgeschlagen. Es ist mehr als ein Menüpunkt mit derselben URL definiert.\n\n=> #VAR1_BOLD#</string> 
     <string name="PLG_KATEGORIEREPORT_NUMBER_COL">Anzahl (Spalte)</string> 
