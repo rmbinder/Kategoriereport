@@ -12,7 +12,8 @@
  * 
  * Parameters:
  *
- * add	:	Anlegen einer weiteren Konfiguration (true or false)
+ * add_delete : -1 - Erzeugen einer Konfiguration
+ * 				>0 - Löschen einer Konfiguration
  *
  ***********************************************************************************************
  */
