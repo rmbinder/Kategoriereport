@@ -51,13 +51,11 @@ elseif ($getAddDelete > 0)
 		array_splice($pPreferences->config[Konfigurationen][$key], $getAddDelete-1, 1);
 	}
 	
-	// falls die Standardeinstellung der Konfigurationen die soeben geloeschte Konfig war
-	if ($pPreferences->config['Optionen']['config_default'] ==  $getAddDelete-1)
-	{
-		$pPreferences->config['Optionen']['config_default'] = 0;
-	}
-	
+	// durch das Loeschen einer Konfiguration kann der Fall eintreten, dass es die eingestellte Standardkonfiguration nicht mehr gibt 
+	// daher die Standardkonfiguration auf die erste Konfiguration im Array setzen
+	$pPreferences->config['Optionen']['config_default'] = 0;
 }
+
 $num_configs = count($pPreferences->config['Konfigurationen']['col_desc']);
 $pPreferences->save();
 
