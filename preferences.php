@@ -62,7 +62,11 @@ $pPreferences->save();
 
 $report = new GenReport();
 
-$gNavigation->addUrl(CURRENT_URL, $headline);
+// add current url to navigation stack if last url was not the same page
+if (!admStrContains($gNavigation->getUrl(), 'preferences.php'))
+{
+    $gNavigation->addUrl(CURRENT_URL, $headline);
+}
 
 // create html page object
 $page = new HtmlPage($headline);
