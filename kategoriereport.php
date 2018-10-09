@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Kategoriereport
  *
- * Version 2.3.1
+ * Version 2.3.2
  *
  * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehoerigkeiten eines Mitglieds.
  * 
