@@ -54,7 +54,7 @@ function getRole_IDPKR($role_name)
  */
 function isUserAuthorized($scriptName)
 {
-	global $gDb, $gCurrentUser, $gMessage, $gL10n;
+	global $gDb, $gCurrentUser, $gMessage, $gL10n, $gLogger;
 	
 	$userIsAuthorized = false;
 	$menId = 0;
@@ -67,6 +67,8 @@ function isUserAuthorized($scriptName)
 	
 	if ( $menuStatement->rowCount() === 0 || $menuStatement->rowCount() > 1)
 	{
+		$gLogger->notice('CategoryReport: Error with menu entry: Found rows: '. $menuStatement->rowCount() );
+		$gLogger->notice('CategoryReport: Error with menu entry: ScriptName: '. $scriptName);
 		$gMessage->show($gL10n->get('PLG_KATEGORIEREPORT_MENU_URL_ERROR', array($scriptName)), $gL10n->get('SYS_ERROR'));
 	}
 	else
