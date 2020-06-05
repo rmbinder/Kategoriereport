@@ -55,9 +55,9 @@ foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $dummy)
 {
 	$validValues[] = 'X'.$key.'X';
 }
-$getConfig     = admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
-$getMode       = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('csv-ms', 'csv-oo', 'html', 'print', 'pdf', 'pdfl' )));
-$getFullScreen = admFuncVariableIsValid($_GET, 'full_screen', 'numeric');
+$getConfig         = admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
+$getMode           = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('csv-ms', 'csv-oo', 'html', 'print', 'pdf', 'pdfl' )));
+$getExportFeatures = admFuncVariableIsValid($_GET, 'export_features', 'bool', array('defaultValue' => false));
 
 // initialize some special mode parameters
 $separator   = '';
@@ -65,8 +65,6 @@ $valueQuotes = '';
 $charset     = '';
 $classTable  = '';
 $orientation = '';
-$filename    = $g_organization.'-'.$gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
-$str_csv     = '';   // enthaelt die komplette CSV-Datei als String
 
 switch ($getMode)
 {
@@ -77,8 +75,8 @@ switch ($getMode)
         $charset     = 'iso-8859-1';
         break;
     case 'csv-oo':
-        $separator   = ',';   // a CSV file should have a comma
-        $valueQuotes = '"';   // all values should be set with quotes
+        $separator   = ',';  // a CSV file should have a comma
+        $valueQuotes = '"';  // all values should be set with quotes
         $getMode     = 'csv';
         $charset     = 'utf-8';
         break;
@@ -102,6 +100,9 @@ switch ($getMode)
         break;
 }
 
+// CSV file as string
+$csvStr = ''; 
+
 //die Anzeigeliste erzeugen 
 $report = new GenReport();
 $report->conf = trim($getConfig,'X');
@@ -121,35 +122,36 @@ $columnCount = count($report->headerData);
 // define title (html) and headline
 $title       = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
 $headline    = $gL10n->get('PLG_KATEGORIEREPORT_CATEGORY_REPORT');
-$subheadline = $pPreferences->config['Konfigurationen']['col_desc'][trim($getConfig,'X')];    
+$subheadline = $pPreferences->config['Konfigurationen']['col_desc'][trim($getConfig,'X')];   
+
+$filename    = $g_organization.'-'.$headline.'-'.$subheadline;
 
 // if html mode and last url was not a list view then save this url to navigation stack
-if ($getMode == 'html' && strpos($gNavigation->getUrl(), 'kategoriereport.php') === false)
+if ($getMode === 'html' && !StringUtils::strContains($gNavigation->getUrl(), 'kategoriereport.php'))
 {
     $gNavigation->addUrl(CURRENT_URL);
 }
 
-if ($getMode != 'csv')
+if ($getMode !== 'csv')
 {
     $datatable = false;
     $hoverRows = false;
 
-    if ($getMode == 'print')
+    if ($getMode === 'print')
     {
         // create html page object without the custom theme files
-        $page = new HtmlPage($headline);
+        $page = new HtmlPage();
         $page->hideThemeHtml();
         $page->hideMenu();
         $page->setPrintMode();
-                
         $page->setTitle($title);
-        $page->addHtml('<h3>'.$subheadline.'</h3>');
-        
-    	$table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
+        $page->setHeadline($headline);
+        $page->addHtml('<h5>'.$subheadline.'</h5>');
+        $table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
     }
-    elseif ($getMode == 'pdf')
+    elseif ($getMode === 'pdf')
     {
-    	if (ini_get('max_execution_time')<600)
+        if (ini_get('max_execution_time')<600)
     	{
     		ini_set('max_execution_time', 600); //600 seconds = 10 minutes
     	}
@@ -159,123 +161,130 @@ if ($getMode != 'csv')
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Admidio');
-        $pdf->SetTitle($title);
+        $pdf->SetTitle($headline);
 
         // remove default header/footer
         $pdf->setPrintHeader(true);
         $pdf->setPrintFooter(false);
-        
- 		// set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-		
+        // set header and footer fonts
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
         // set auto page breaks
         $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
         $pdf->SetMargins(10, 20, 10);
-        $pdf->SetHeaderMargin(10);
-        $pdf->SetFooterMargin(0);
+        $pdf->setHeaderMargin(10);
+        $pdf->setFooterMargin(0);
 
-        //headline for PDF
-        $pdf->SetHeaderData('', '', $headline, '');
-		
+        // headline for PDF
+        $pdf->setHeaderData('', '', $headline);
+
         // set font
         $pdf->SetFont('times', '', 10);
 
         // add a page
         $pdf->AddPage();
-        
+
         // Create table object for display
-		$table = new HtmlTable('adm_lists_table', null, $hoverRows, $datatable, $classTable);
+        $table = new HtmlTable('adm_lists_table', null, $hoverRows, $datatable, $classTable);
         $table->addAttribute('border', '1');
+        
         $table->addTableHeader();
         $table->addRow();
         $table->addAttribute('align', 'center');
         $table->addColumn($subheadline, array('colspan' => $columnCount + 1));
         $table->addRow();
     }
-    elseif ($getMode == 'html')
+    elseif ($getMode === 'html')
     {
-        $datatable = true;
-        $hoverRows = true;
-
-        // create html page object
-        $page = new HtmlPage($headline.'<h3>'.$subheadline.'</h3>');
-
-        if ($getFullScreen == true)
+        if ($getExportFeatures)
         {
-        	$page->hideThemeHtml();
-        }
-
-        $page->setTitle($title);
-        $page->addJavascript('
-            $("#export_list_to").change(function () {
-                if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
-                        "config='.$getConfig.'&mode=" + $(this).val();
-                }
-            });
-            $("#configList").change(function () {
-            	if($(this).val().length > 1) {
-                    self.location.href = "'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
-                        "mode=html&full_screen='.$getFullScreen.'&config=" + $(this).val();
-                }
-            });            
-            $("#menu_item_print_view").click(function () {
-                window.open("'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?" +
-                 "config='.$getConfig.'&mode=print", "_blank");
-            });', true);
-
-        // get module menu
-        $listsMenu = $page->getMenu();
-        
-        if ($getFullScreen == true)
-        {
-            $listsMenu->addItem('menu_item_normal_picture', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=0',
-                $gL10n->get('SYS_NORMAL_PICTURE'), 'arrow_in.png');
+            $datatable = false;
         }
         else
         {
-            $listsMenu->addItem('menu_item_full_screen', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php?mode=html&amp;config='.$getConfig.'&amp;full_screen=1',
-                $gL10n->get('SYS_FULL_SCREEN'), 'arrow_out.png');
+            $datatable = true;
         }
         
-        // link to print overlay and exports
-        $listsMenu->addItem('menu_item_print_view', '#', $gL10n->get('LST_PRINT_PREVIEW'), 'print.png');
+        $hoverRows = true;
+
+        // create html page object
+        $page = new HtmlPage();
+        $page->setTitle($title);
+        $page->setHeadline($headline);
+        $page->addHtml('<h5>'.$subheadline.'</h5>');
         
-        $form = new HtmlForm('navbar_export_to_form', '', $page, array('type' => 'navbar', 'setFocus' => false));
-        $selectBoxEntries = array('' => $gL10n->get('LST_EXPORT_TO').' ...', 'csv-ms' => $gL10n->get('LST_MICROSOFT_EXCEL').' ('.$gL10n->get('SYS_ISO_8859_1').')', 'pdf' => $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_PORTRAIT').')', 
-                                  'pdfl' => $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_LANDSCAPE').')', 'csv-oo' => $gL10n->get('SYS_CSV').' ('.$gL10n->get('SYS_UTF8').')');
-        $form->addSelectBox('export_list_to', null, $selectBoxEntries, array('showContextDependentFirstEntry' => false));
-        
-        $selectBoxEntries = array(' ' => $gL10n->get('PLG_KATEGORIEREPORT_SELECT_CONFIGURATION').' ...');
-    	foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $item)
-    	{
-			$selectBoxEntries['X'.$key.'X'] = $item;
-		}
-        $form->addSelectBox('configList', null, $selectBoxEntries, array('showContextDependentFirstEntry' => false));
-        
-        $listsMenu->addForm($form->show(false));
+        $page->addJavascript('
+            $("#menu_item_lists_print_view").click(function() {
+                window.open("'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('mode' => 'print', 'config' => $getConfig)).'", "_blank");
+            });',
+            true
+        );
+
+        if ($getExportFeatures)
+        {
+            // link to print overlay and exports
+            $page->addPageFunctionsMenuItem('menu_item_lists_print_view', $gL10n->get('LST_PRINT_PREVIEW'), 'javascript:void(0);', 'fa-print');
+
+            // dropdown menu item with all export possibilities
+            $page->addPageFunctionsMenuItem('menu_item_lists_export', $gL10n->get('LST_EXPORT_TO'), '#', 'fa-file-download');
+            $page->addPageFunctionsMenuItem('menu_item_lists_csv_ms', $gL10n->get('LST_MICROSOFT_EXCEL'),
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'csv-ms')),
+                'fa-file-excel', 'menu_item_lists_export');
+            $page->addPageFunctionsMenuItem('menu_item_lists_pdf', $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_PORTRAIT').')',
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'pdf')),
+                'fa-file-pdf', 'menu_item_lists_export');
+            $page->addPageFunctionsMenuItem('menu_item_lists_pdfl', $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_LANDSCAPE').')',
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'pdfl')),
+                'fa-file-pdf', 'menu_item_lists_export');
+            $page->addPageFunctionsMenuItem('menu_item_lists_csv', $gL10n->get('SYS_CSV').' ('.$gL10n->get('SYS_UTF8').')',
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'csv-oo')),
+                'fa-file-csv', 'menu_item_lists_export');
+        }
         
         if ($gCurrentUser->isAdministrator())
 		{
     		// show link to pluginpreferences 
-    		$listsMenu->addItem('admMenuItemPreferencesLists', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',
-                        $gL10n->get('PLG_KATEGORIEREPORT_SETTINGS'), 'options.png', 'right');        
+    		$page->addPageFunctionsMenuItem('admMenuItemPreferencesLists', $gL10n->get('PLG_KATEGORIEREPORT_SETTINGS'),
+    		    ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php',  'fa-cog');
 		}
-        
-    	$table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
-        $table->setDatatablesRowsPerPage($gPreferences['lists_members_per_page']);
+
+		// process changes in the navbar form with javascript submit
+		$page->addJavascript('
+            $("#export_features").change(function() {
+                $("#navbar_catreport_form").submit();
+            });
+            $("#config").change(function() {
+                $("#navbar_catreport_form").submit();
+            });',
+		    true
+		);
+		
+		foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $item)
+		{
+		    $selectBoxEntries['X'.$key.'X'] = $item;
+		}
+	
+		$catreportNavbar = new HtmlNavbar('navbar_catreport');
+		$form = new HtmlForm('navbar_catreport_form', SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('headline' => $headline)), $page, array('type' => 'navbar', 'setFocus' => false));
+		$form->addSelectBox('config', $gL10n->get('PLG_KATEGORIEREPORT_SELECT_CONFIGURATION'), $selectBoxEntries, array('showContextDependentFirstEntry' => false,'defaultValue' => $getConfig));
+		$form->addCheckbox('export_features', $gL10n->get('PLG_KATEGORIEREPORT_EXPORT_FEATURES'), $getExportFeatures);
+		$catreportNavbar->addForm($form->show());
+		$page->addHtml($catreportNavbar->show());
+		
+        $table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
+        $table->setDatatablesRowsPerPage($gSettingsManager->getInt('lists_members_per_page'));
     }
-	else
-	{
-		$table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
-	}
+    else
+    {
+        $table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
+    }
 }
 
 $columnAlign  = array('center');
 $columnValues = array($gL10n->get('SYS_ABR_NO'));
 $columnNumber = 1;  
-  
+ 
 foreach ($report->headerData as $columnHeader) 
 {
 	// bei Profilfeldern ist in 'id' die usf_id, ansonsten 0
@@ -296,9 +305,9 @@ foreach ($report->headerData as $columnHeader)
     	if ($columnNumber === 1)
         {
         	// in der ersten Spalte die laufende Nummer noch davorsetzen
-            $str_csv .= $valueQuotes. $gL10n->get('SYS_ABR_NO'). $valueQuotes;
+            $csvStr .= $valueQuotes. $gL10n->get('SYS_ABR_NO'). $valueQuotes;
         }
-        $str_csv .= $separator. $valueQuotes. $columnHeader['data']. $valueQuotes;
+        $csvStr .= $separator. $valueQuotes. $columnHeader['data']. $valueQuotes;
     }
     elseif ($getMode == 'pdf')
     {
@@ -315,11 +324,11 @@ foreach ($report->headerData as $columnHeader)
     $columnNumber++;
 } 
 
-if ($getMode == 'csv')
+if ($getMode === 'csv')
 {
-    $str_csv .= "\n";
+    $csvStr .= "\n";
 }
-elseif ($getMode == 'html' || $getMode == 'print')
+elseif ($getMode === 'html' || $getMode === 'print')
 {
     $table->setColumnAlignByArray($columnAlign);
     $table->addRowHeadingByArray($columnValues);
@@ -327,10 +336,10 @@ elseif ($getMode == 'html' || $getMode == 'print')
 else
 {
     $table->addTableBody();
-    $table->setColumnAlignByArray($columnAlign);
+      $table->setColumnAlignByArray($columnAlign);
 }
 
-$listRowNumber = 1;    
+$listRowNumber = 1;
 
 // die Daten einlesen
 foreach ($report->listData as $member => $memberdata) 
@@ -354,7 +363,7 @@ foreach ($report->listData as $member => $memberdata)
             if ($columnNumber === 1)
             {
                 // erste Spalte zeigt lfd. Nummer an
-                $str_csv .= $valueQuotes. $listRowNumber. $valueQuotes;
+                $csvStr .= $valueQuotes. $listRowNumber. $valueQuotes;
             }
         }
          
@@ -379,7 +388,7 @@ foreach ($report->listData as $member => $memberdata)
 
         if ($getMode == 'csv')
         {
-        	$str_csv .= $separator. $valueQuotes. $content. $valueQuotes;
+        	$csvStr .= $separator. $valueQuotes. $content. $valueQuotes;
         }
         else                   // create output in html layout
         {            
@@ -409,7 +418,7 @@ foreach ($report->listData as $member => $memberdata)
 
 	if ($getMode == 'csv')
     {
-    	$str_csv .= "\n";
+    	$csvStr .= "\n";
     }
 	else
     {
@@ -420,57 +429,62 @@ foreach ($report->listData as $member => $memberdata)
 }  // End-For (jeder gefundene User)
 
 // Settings for export file
-if ($getMode == 'csv' || $getMode == 'pdf')
+if ($getMode === 'csv' || $getMode === 'pdf')
 {
-    $filename .= '.'.$getMode;
-    
-     // for IE the filename must have special chars in hexadecimal 
-    if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT']))
-    {
-        $filename = urlencode($filename);
-    }
+    $filename = FileSystemUtils::getSanitizedPathEntry($filename) . '.' . $getMode;
 
     header('Content-Disposition: attachment; filename="'.$filename.'"');
-    
-    // neccessary for IE6 to 8, because without it the download with SSL has problems
+
+    // necessary for IE6 to 8, because without it the download with SSL has problems
     header('Cache-Control: private');
     header('Pragma: public');
 }
 
-if ($getMode == 'csv')
+if ($getMode === 'csv')
 {
-    // nun die erstellte CSV-Datei an den User schicken
+    // download CSV file
     header('Content-Type: text/comma-separated-values; charset='.$charset);
 
-    if ($charset == 'iso-8859-1')
+    if ($charset === 'iso-8859-1')
     {
-        echo utf8_decode($str_csv);
+        echo utf8_decode($csvStr);
     }
     else
     {
-        echo $str_csv;
+        echo $csvStr;
     }
 }
 // send the new PDF to the User
-elseif ($getMode == 'pdf')
+elseif ($getMode === 'pdf')
 {
     // output the HTML content
-    $pdf->writeHTML($table->getHtmlTable(), true, false, true, false, '');
-    
-    //Save PDF to file
-    $pdf->Output(ADMIDIO_PATH . FOLDER_DATA . '/'.$filename, 'F');
-    
-    //Redirect
+    $pdf->writeHTML($table->getHtmlTable(), true, false, true);
+
+    $file = ADMIDIO_PATH . FOLDER_DATA . '/' . $filename;
+
+    // Save PDF to file
+    $pdf->Output($file, 'F');
+
+    // Redirect
     header('Content-Type: application/pdf');
 
-    readfile(ADMIDIO_PATH . FOLDER_DATA . '/'.$filename);
+    readfile($file);
     ignore_user_abort(true);
-    unlink(ADMIDIO_PATH . FOLDER_DATA . '/'.$filename);
+
+    try
+    {
+        FileSystemUtils::deleteFileIfExists($file);
+    }
+    catch (\RuntimeException $exception)
+    {
+        $gLogger->error('Could not delete file!', array('filePath' => $file));
+        // TODO
+    }
 }
-elseif ($getMode == 'html' || $getMode == 'print')
-{    
+elseif ($getMode === 'html' || $getMode === 'print')
+{
     // add table list to the page
-    $page->addHtml($table->show(false));
+    $page->addHtml($table->show());
 
     // show complete html page
     $page->show();

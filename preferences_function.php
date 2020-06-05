@@ -102,24 +102,20 @@ case 2:
 	
 	$headline = $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION');
 	 
-	    // create html page object
+	// create html page object
     $page = new HtmlPage($headline);
     
     // add current url to navigation stack
     $gNavigation->addUrl(CURRENT_URL, $headline);
     
-    // create module menu with back link
-    $organizationNewMenu = new HtmlNavbar('menu_deinstallation', $headline, $page);
-    $organizationNewMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
-    $page->addHtml($organizationNewMenu->show(false));
-    
+    $page->setUrlPreviousPage($gNavigation->getPreviousUrl());
     $page->addHtml('<p class="lead">'.$gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION_FORM_DESC').'</p>');
 
     // show form
     $form = new HtmlForm('deinstallation_form', ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=3', $page);
     $radioButtonEntries = array('0' => $gL10n->get('PLG_KATEGORIEREPORT_DEINST_ACTORGONLY'), '1' => $gL10n->get('PLG_KATEGORIEREPORT_DEINST_ALLORG') );
     $form->addRadioButton('deinst_org_select',$gL10n->get('PLG_KATEGORIEREPORT_ORG_CHOICE'), $radioButtonEntries);    
-    $form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), array('icon' => THEME_URL .'/icons/delete.png', 'class' => 'col-sm-offset-3'));
+    $form->addSubmitButton('btn_deinstall', $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), array('icon' => 'fa-trash-alt', 'class' => 'col-sm-offset-3'));
     
     // add form to html page and show page
     $page->addHtml($form->show(false));
