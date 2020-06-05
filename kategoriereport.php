@@ -3,15 +3,15 @@
  ***********************************************************************************************
  * Kategoriereport
  *
- * Version 2.3.2
+ * Version 3.0.0-Beta1
  *
  * Dieses Plugin erzeugt eine Auflistung aller Rollenzugehoerigkeiten eines Mitglieds.
  * 
  * Author: rmb
  *
- * Compatible with Admidio version 3.3
+ * Compatible with Admidio version 4
  *
- * @copyright 2004-2018 The Admidio Team
+ * @copyright 2004-2020 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *   
