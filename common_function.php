@@ -63,6 +63,7 @@ function isUserAuthorized($scriptName)
           ORDER BY men_men_id_parent DESC, men_order';
 	
 	$menuStatement = $gDb->queryPrepared($sql, array($menId));
+	
 	while ($row = $menuStatement->fetch())
 	{
 		if ((int) $row['men_com_id'] === 0 || Component::isVisible($row['com_name_intern']))
@@ -130,18 +131,24 @@ function isMemberOfCategorie($cat_id, $user_id = 0)
 
     $sql    = 'SELECT mem_id
                  FROM '. TBL_MEMBERS. ', '. TBL_ROLES. ', '. TBL_CATEGORIES. '
-                WHERE mem_usr_id = '.$user_id.'
-                  AND mem_begin <= \''.DATE_NOW.'\'
-                  AND mem_end    > \''.DATE_NOW.'\'
+                WHERE mem_usr_id = ? -- $user_id
+                  AND mem_begin <= ? -- DATE_NOW
+                  AND mem_end    > ? -- DATE_NOW
                   AND mem_rol_id = rol_id
-                  AND cat_id   = \''.$cat_id.'\'
-                  AND rol_valid  = 1 
+                  AND cat_id   = ? -- $cat_id
+                  AND rol_valid  = 1
                   AND rol_cat_id = cat_id
-                  AND (  cat_org_id = '.ORG_ID.'
+                  AND (  cat_org_id = ? -- ORG_ID
                    OR cat_org_id IS NULL ) ';
-                
-    $statement = $gDb->query($sql);
-
+    
+    $queryParams = array(
+        $user_id,
+        DATE_NOW,
+        DATE_NOW,
+        $cat_id,
+        ORG_ID
+    );
+    $statement = $gDb->queryPrepared($sql, $queryParams);
     $user_found = $statement->rowCount();
 
     if ($user_found == 1)
