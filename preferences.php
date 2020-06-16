@@ -72,14 +72,14 @@ if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
 $page = new HtmlPage($headline);
 $page->setUrlPreviousPage($gNavigation->getPreviousUrl());
 
-// open the module configurations if a new configuration is added
+// open the module configurations if a new configuration is added or deleted
 if ($getAddDelete <> 0)
 {
     $page->addJavascript('
-        $("#tabs_nav_common").attr("class", "active");
-        $("#tabs-common").attr("class", "tab-pane active");
-        $("#collapse_configurations").attr("class", "panel-collapse collapse in");
-        location.hash = "#" + "panel_configurations";', 
+        $("#tabs_nav_common").attr("class", "nav-link active");
+        $("#tabs-common").attr("class", "tab-pane fade show active");
+        $("#collapse_configurations").attr("class", "collapse show");
+        location.hash = "#" + "panel_configurations";',
         true
     );
 }
