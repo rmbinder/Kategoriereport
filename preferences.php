@@ -49,7 +49,7 @@ elseif ($getAddDelete > 0)
 {
     foreach($pPreferences->config['Konfigurationen'] as $key => $dummy)
     {
-        array_splice($pPreferences->config[Konfigurationen][$key], $getAddDelete-1, 1);
+        array_splice($pPreferences->config['Konfigurationen'][$key], $getAddDelete-1, 1);
     }
     
     // durch das Loeschen einer Konfiguration kann der Fall eintreten, dass es die eingestellte Standardkonfiguration nicht mehr gibt
