@@ -103,7 +103,7 @@ case 2:
 	$headline = $gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION');
 	 
 	// create html page object
-    $page = new HtmlPage($headline);
+    $page = new HtmlPage('plg-kategoriereport-deinstallation', $headline);
     
     // add current url to navigation stack
     $gNavigation->addUrl(CURRENT_URL, $headline);
