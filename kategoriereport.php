@@ -17,10 +17,10 @@
  *   
  * Parameters:
  *
- * mode   		: Output (html, print, csv-ms, csv-oo, pdf, pdfl)
- * full_screen  : 0 - (Default) show sidebar, head and page bottom of html page
- *                1 - Only show the list without any other html unnecessary elements
- * config		: Die gewaehlte Konfiguration (Alte Bezeichnung Fokus; die Standardeinstellung wurde ueber Einstellungen-Optionen festgelegt)
+ * mode   		    : Output (html, print, csv-ms, csv-oo, pdf, pdfl)
+ * export_features  : 0 - (Default) No export menu
+ *                    1 - Export menu is enabled
+ * config		    : the selected configuration
  ***********************************************************************************************
  */
 
@@ -139,10 +139,7 @@ if ($getMode !== 'csv')
 
     if ($getMode === 'print')
     {
-        // create html page object without the custom theme files
         $page = new HtmlPage('plg-kategoriereport-main-print');
-        $page->hideThemeHtml();
-        $page->hideMenu();
         $page->setPrintMode();
         $page->setTitle($title);
         $page->setHeadline($headline);
@@ -265,12 +262,11 @@ if ($getMode !== 'csv')
 		    $selectBoxEntries['X'.$key.'X'] = $item;
 		}
 	
-		$catreportNavbar = new HtmlNavbar('navbar_catreport');
 		$form = new HtmlForm('navbar_catreport_form', SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('headline' => $headline)), $page, array('type' => 'navbar', 'setFocus' => false));
 		$form->addSelectBox('config', $gL10n->get('PLG_KATEGORIEREPORT_SELECT_CONFIGURATION'), $selectBoxEntries, array('showContextDependentFirstEntry' => false,'defaultValue' => $getConfig));
 		$form->addCheckbox('export_features', $gL10n->get('PLG_KATEGORIEREPORT_EXPORT_FEATURES'), $getExportFeatures);
-		$catreportNavbar->addForm($form->show());
-		$page->addHtml($catreportNavbar->show());
+
+		$page->addHtml($form->show());
 		
         $table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
         $table->setDatatablesRowsPerPage($gSettingsManager->getInt('lists_members_per_page'));
@@ -481,11 +477,17 @@ elseif ($getMode === 'pdf')
         // TODO
     }
 }
-elseif ($getMode === 'html' || $getMode === 'print')
+elseif ($getMode == 'html' && $getExportFeatures)
 {
-    // add table list to the page
-    $page->addHtml($table->show());
-
-    // show complete html page
+    $page->addHtml('<div style="width:100%; height: 500px; overflow:auto; border:20px;">');
+    $page->addHtml($table->show(false));
+    $page->addHtml('</div><br/>');
+    
+    $page->show();
+}
+elseif (($getMode == 'html' && !$getExportFeatures) || $getMode == 'print')
+{
+    $page->addHtml($table->show(false));
+    
     $page->show();
 }
