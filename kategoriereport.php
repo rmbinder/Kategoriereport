@@ -113,7 +113,7 @@ $numMembers = count($report->listData);
 if ($numMembers == 0)
 {
     // Es sind keine Daten vorhanden !
-    $gMessage->show($gL10n->get('LST_NO_USER_FOUND'));
+    $gMessage->show($gL10n->get('SYS_NO_USER_FOUND'));
 }
 
 //die Spaltenanzahl bestimmen
@@ -221,11 +221,11 @@ if ($getMode !== 'csv')
         if ($getExportFeatures)
         {
             // link to print overlay and exports
-            $page->addPageFunctionsMenuItem('menu_item_lists_print_view', $gL10n->get('LST_PRINT_PREVIEW'), 'javascript:void(0);', 'fa-print');
+            $page->addPageFunctionsMenuItem('menu_item_lists_print_view', $gL10n->get('SYS_PRINT_PREVIEW'), 'javascript:void(0);', 'fa-print');
 
             // dropdown menu item with all export possibilities
-            $page->addPageFunctionsMenuItem('menu_item_lists_export', $gL10n->get('LST_EXPORT_TO'), '#', 'fa-file-download');
-            $page->addPageFunctionsMenuItem('menu_item_lists_csv_ms', $gL10n->get('LST_MICROSOFT_EXCEL'),
+            $page->addPageFunctionsMenuItem('menu_item_lists_export', $gL10n->get('SYS_EXPORT_TO'), '#', 'fa-file-download');
+            $page->addPageFunctionsMenuItem('menu_item_lists_csv_ms', $gL10n->get('SYS_MICROSOFT_EXCEL'),
                 SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'csv-ms')),
                 'fa-file-excel', 'menu_item_lists_export');
             $page->addPageFunctionsMenuItem('menu_item_lists_pdf', $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_PORTRAIT').')',
