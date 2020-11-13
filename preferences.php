@@ -143,7 +143,7 @@ for ($conf=0;$conf<$num_configs;$conf++)
         	newTableRow.setAttribute("id", "row" + (fieldNumberIntern'.$conf.' + 1))
         	//$(newTableRow).css("display", "none"); // ausgebaut wg. Kompatibilitaetsproblemen im IE8
         	var newCellCount = newTableRow.insertCell(-1);
-        	newCellCount.innerHTML = (fieldNumberShow) + ".&nbsp;'.$gL10n->get('LST_COLUMN').':";
+        	newCellCount.innerHTML = (fieldNumberShow) + ".&nbsp;'.$gL10n->get('SYS_COLUMN').':";
         	    
         	// neue Spalte zur Auswahl des Profilfeldes
         	var newCellField = newTableRow.insertCell(-1);
