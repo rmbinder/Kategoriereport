@@ -126,10 +126,9 @@ $subheadline = $pPreferences->config['Konfigurationen']['col_desc'][trim($getCon
 
 $filename    = $g_organization.'-'.$headline.'-'.$subheadline;
 
-// if html mode and last url was not a list view then save this url to navigation stack
-if ($getMode === 'html' && !StringUtils::strContains($gNavigation->getUrl(), 'kategoriereport.php'))
+if ($getMode === 'html' )
 {
-    $gNavigation->addUrl(CURRENT_URL);
+    $gNavigation->addStartUrl(CURRENT_URL, $headline);
 }
 
 if ($getMode !== 'csv')
