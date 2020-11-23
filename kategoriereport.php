@@ -55,9 +55,10 @@ foreach ($pPreferences->config['Konfigurationen']['col_desc'] as $key => $dummy)
 {
 	$validValues[] = 'X'.$key.'X';
 }
-$getConfig         = admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
-$getMode           = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('csv-ms', 'csv-oo', 'html', 'print', 'pdf', 'pdfl' )));
-$getExportFeatures = admFuncVariableIsValid($_GET, 'export_features', 'bool', array('defaultValue' => false));
+$getConfig          = admFuncVariableIsValid($_GET, 'config', 'string', array('defaultValue' => 'X'.$pPreferences->config['Optionen']['config_default'].'X', 'validValues' => $validValues) );
+$getMode            = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'html', 'validValues' => array('csv-ms', 'csv-oo', 'html', 'print', 'pdf', 'pdfl' )));
+$getFilter          = admFuncVariableIsValid($_GET, 'filter', 'string');
+$getExportAndFilter = admFuncVariableIsValid($_GET, 'export_and_filter', 'bool', array('defaultValue' => false));
 
 // initialize some special mode parameters
 $separator   = '';
@@ -193,7 +194,7 @@ if ($getMode !== 'csv')
     }
     elseif ($getMode === 'html')
     {
-        if ($getExportFeatures)
+        if ($getExportAndFilter)
         {
             $datatable = false;
         }
@@ -212,12 +213,17 @@ if ($getMode !== 'csv')
         
         $page->addJavascript('
             $("#menu_item_lists_print_view").click(function() {
-                window.open("'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('mode' => 'print', 'config' => $getConfig)).'", "_blank");
+                window.open("'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array(
+                    'mode'              => 'print',
+                    'filter'            => $getFilter, 
+                    'export_and_filter' => $getExportAndFilter,
+                    'config'            => $getConfig
+                )).'", "_blank");
             });',
             true
         );
 
-        if ($getExportFeatures)
+        if ($getExportAndFilter)
         {
             // link to print overlay and exports
             $page->addPageFunctionsMenuItem('menu_item_lists_print_view', $gL10n->get('SYS_PRINT_PREVIEW'), 'javascript:void(0);', 'fa-print');
@@ -225,17 +231,38 @@ if ($getMode !== 'csv')
             // dropdown menu item with all export possibilities
             $page->addPageFunctionsMenuItem('menu_item_lists_export', $gL10n->get('SYS_EXPORT_TO'), '#', 'fa-file-download');
             $page->addPageFunctionsMenuItem('menu_item_lists_csv_ms', $gL10n->get('SYS_MICROSOFT_EXCEL'),
-                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'csv-ms')),
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array(
+                    'config'            => $getConfig,
+                    'filter'            => $getFilter, 
+                    'export_and_filter' => $getExportAndFilter,
+                    'mode'              => 'csv-ms')),
                 'fa-file-excel', 'menu_item_lists_export');
             $page->addPageFunctionsMenuItem('menu_item_lists_pdf', $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_PORTRAIT').')',
-                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'pdf')),
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array(
+                    'config'            => $getConfig,
+                    'filter'            => $getFilter, 
+                    'export_and_filter' => $getExportAndFilter,
+                    'mode'              => 'pdf')),
                 'fa-file-pdf', 'menu_item_lists_export');
             $page->addPageFunctionsMenuItem('menu_item_lists_pdfl', $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_LANDSCAPE').')',
-                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'pdfl')),
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array(
+                    'config'            => $getConfig,
+                    'filter'            => $getFilter, 
+                    'export_and_filter' => $getExportAndFilter,
+                    'mode'              => 'pdfl')),
                 'fa-file-pdf', 'menu_item_lists_export');
             $page->addPageFunctionsMenuItem('menu_item_lists_csv', $gL10n->get('SYS_CSV').' ('.$gL10n->get('SYS_UTF8').')',
-                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('config' => $getConfig, 'mode' => 'csv-oo')),
+                SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array(
+                    'config'            => $getConfig,
+                    'filter'            => $getFilter, 
+                    'export_and_filter' => $getExportAndFilter,
+                    'mode'              => 'csv-oo')),
                 'fa-file-csv', 'menu_item_lists_export');
+        }
+        else
+        {
+            // if filter is not enabled, reset filterstring
+            $getFilter = '';
         }
         
         if ($gCurrentUser->isAdministrator())
@@ -247,7 +274,7 @@ if ($getMode !== 'csv')
 
 		// process changes in the navbar form with javascript submit
 		$page->addJavascript('
-            $("#export_features").change(function() {
+            $("#export_and_filter").change(function() {
                 $("#navbar_catreport_form").submit();
             });
             $("#config").change(function() {
@@ -263,7 +290,12 @@ if ($getMode !== 'csv')
 	
 		$form = new HtmlForm('navbar_catreport_form', SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php', array('headline' => $headline)), $page, array('type' => 'navbar', 'setFocus' => false));
 		$form->addSelectBox('config', $gL10n->get('PLG_KATEGORIEREPORT_SELECT_CONFIGURATION'), $selectBoxEntries, array('showContextDependentFirstEntry' => false,'defaultValue' => $getConfig));
-		$form->addCheckbox('export_features', $gL10n->get('PLG_KATEGORIEREPORT_EXPORT_FEATURES'), $getExportFeatures);
+		
+        if ($getExportAndFilter)
+        {
+            $form->addInput('filter', $gL10n->get('SYS_FILTER'), $getFilter);
+        }
+        $form->addCheckbox('export_and_filter', $gL10n->get('PLG_KATEGORIEREPORT_EXPORT_AND_FILTER'), $getExportAndFilter);
 
 		$page->addHtml($form->show());
 		
@@ -340,6 +372,7 @@ $listRowNumber = 1;
 foreach ($report->listData as $member => $memberdata) 
 {
 	$columnValues = array();
+    $tmp_csv = '';
 
     // Felder zu Datensatz
     $columnNumber = 1;
@@ -358,7 +391,7 @@ foreach ($report->listData as $member => $memberdata)
             if ($columnNumber === 1)
             {
                 // erste Spalte zeigt lfd. Nummer an
-                $csvStr .= $valueQuotes. $listRowNumber. $valueQuotes;
+                $tmp_csv .= $valueQuotes. $listRowNumber. $valueQuotes;
             }
         }
          
@@ -383,7 +416,7 @@ foreach ($report->listData as $member => $memberdata)
 
         if ($getMode == 'csv')
         {
-        	$csvStr .= $separator. $valueQuotes. $content. $valueQuotes;
+        	$tmp_csv .= $separator. $valueQuotes. $content. $valueQuotes;
         }
         else                   // create output in html layout
         {            
@@ -411,16 +444,18 @@ foreach ($report->listData as $member => $memberdata)
 		$columnNumber++;
     }
 
-	if ($getMode == 'csv')
+	if ($getFilter == '' || ($getFilter <> '' && (stristr(implode('',$columnValues), $getFilter  ) || stristr($tmp_csv, $getFilter))))
     {
-    	$csvStr .= "\n";
+		if ($getMode == 'csv')
+   	 	{
+    		$csvStr .= $tmp_csv. "\n";
+    	}
+   	 	else
+    	{
+        	$table->addRowByArray($columnValues, null, array('nobr' => 'true'));
+    	}
+        $listRowNumber++;
     }
-	else
-    {
-        $table->addRowByArray($columnValues, null, array('nobr' => 'true'));
-    }
-
-    $listRowNumber++;
 }  // End-For (jeder gefundene User)
 
 // Settings for export file
@@ -476,7 +511,7 @@ elseif ($getMode === 'pdf')
         // TODO
     }
 }
-elseif ($getMode == 'html' && $getExportFeatures)
+elseif ($getMode == 'html' && $getExportAndFilter)
 {
     $page->addHtml('<div style="width:100%; height: 500px; overflow:auto; border:20px;">');
     $page->addHtml($table->show(false));
@@ -484,7 +519,7 @@ elseif ($getMode == 'html' && $getExportFeatures)
     
     $page->show();
 }
-elseif (($getMode == 'html' && !$getExportFeatures) || $getMode == 'print')
+elseif (($getMode == 'html' && !$getExportAndFilter) || $getMode == 'print')
 {
     $page->addHtml($table->show(false));
     
