@@ -123,7 +123,7 @@ case 2:
     
 case 3:
     
-	$gNavigation->addUrl(CURRENT_URL);
+	$gNavigation->clear();
 	$gMessage->setForwardUrl($gHomepage);		
 
 	$gMessage->show($gL10n->get('PLG_KATEGORIEREPORT_DEINST_STARTMESSAGE').$pPreferences->delete($_POST['deinst_org_select']) );
