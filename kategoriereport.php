@@ -427,7 +427,7 @@ foreach ($report->listData as $member => $memberdata)
         			&&    ($usf_id === (int) $gProfileFields->getProperty('LAST_NAME', 'usf_id')
         				|| $usf_id === (int) $gProfileFields->getProperty('FIRST_NAME', 'usf_id')))
         		{
-        			$content = '<a href="'.ADMIDIO_URL.FOLDER_MODULES.'/profile/profile.php?user_id='.$member.'">'.$content.'</a>';
+        			$content = '<a href="'.SecurityUtils::encodeUrl(ADMIDIO_URL.FOLDER_MODULES.'/profile/profile.php', array('user_id' => $member)).'">'.$content.'</a>';
         		}
         	}
        	

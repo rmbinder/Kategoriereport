@@ -334,7 +334,7 @@ for ($conf=0;$conf<$num_configs;$conf++)
     $formConfigurations->addCheckbox('number_col'.$conf, $gL10n->get('PLG_KATEGORIEREPORT_NUMBER_COL'), $pPreferences->config['Konfigurationen']['number_col'][$conf]);
     if($num_configs != 1)
     {
-        $html = '<a id="delete_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete='.($conf+1).'">
+        $html = '<a id="delete_config" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => $conf+1)).'">
             <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_KATEGORIEREPORT_DELETE_CONFIG').'</a>';
         $formConfigurations->addCustomContent('', $html);
     }
@@ -343,7 +343,7 @@ for ($conf=0;$conf<$num_configs;$conf++)
 }
 $formConfigurations->addDescription('</div>');
 $formConfigurations->addLine();
-$html = '<a id="add_config" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php?add_delete=-1">
+$html = '<a id="add_config" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('add_delete' => -1)).'">
             <i class="fas fa-clone"></i> '.$gL10n->get('PLG_KATEGORIEREPORT_ADD_ANOTHER_CONFIG').'
         </a>';
 $htmlDesc = '<div class="alert alert-warning alert-small" role="alert">
@@ -361,7 +361,7 @@ $formOptions = new HtmlForm(
     $page, array('class' => 'form-preferences')
 );
 $formOptions->addSelectBox('config_default', $gL10n->get('PLG_KATEGORIEREPORT_CONFIGURATION'),$pPreferences->config['Konfigurationen']['col_desc'], array('defaultValue' => $pPreferences->config['Optionen']['config_default'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'PLG_KATEGORIEREPORT_CONFIGURATION_DEFAULT_DESC'));
-$html = '<a id="deinstallation" class="icon-text-link" href="'. ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php?mode=2">
+$html = '<a id="deinstallation" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('mode' => 2)).'">
     <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION').'</a>';
 $formOptions->addCustomContent($gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_KATEGORIEREPORT_DEINSTALLATION_DESC'));
 $formOptions->addSubmitButton('btn_save_options', $gL10n->get('SYS_SAVE'), array('icon' => 'fa-check', 'class' => ' offset-sm-3'));
