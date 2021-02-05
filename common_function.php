@@ -160,3 +160,21 @@ function isMemberOfCategorie($cat_id, $user_id = 0)
         return 0;
     }   
 }
+
+/**
+ * Funktion prüft, ob es eine Konfiguration mit dem übergebenen Namen bereits gibt
+ * wenn ja: wird "- Kopie" angehängt und rekursiv überprüft
+ * @param   string  $name
+ * @return  string
+ */
+function createColDescConfig($name)
+{
+    global $pPreferences, $gL10n;
+    
+    while (in_array($name, $pPreferences->config['Konfigurationen']['col_desc']))
+    {
+        $name .= ' - '.$gL10n->get('MAI_CARBON_COPY');
+    }
+
+    return $name;
+}

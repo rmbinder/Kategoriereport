@@ -361,6 +361,9 @@ $formOptions = new HtmlForm(
     $page, array('class' => 'form-preferences')
 );
 $formOptions->addSelectBox('config_default', $gL10n->get('PLG_KATEGORIEREPORT_CONFIGURATION'),$pPreferences->config['Konfigurationen']['col_desc'], array('defaultValue' => $pPreferences->config['Optionen']['config_default'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'PLG_KATEGORIEREPORT_CONFIGURATION_DEFAULT_DESC'));
+$html = '<a class="btn" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/export_import.php', array('mode' => 1)).'">
+    <i class="fas fa-exchange-alt"></i> '.$gL10n->get('PLG_KATEGORIEREPORT_LINK_TO_EXPORT_IMPORT').'</a>';
+$formOptions->addCustomContent($gL10n->get('PLG_KATEGORIEREPORT_EXPORT_IMPORT'), $html, array('helpTextIdInline' => 'PLG_KATEGORIEREPORT_EXPORT_IMPORT_DESC'));
 $html = '<a id="deinstallation" class="icon-text-link" href="'. SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences_function.php', array('mode' => 2)).'">
     <i class="fas fa-trash-alt"></i> '.$gL10n->get('PLG_KATEGORIEREPORT_LINK_TO_DEINSTALLATION').'</a>';
 $formOptions->addCustomContent($gL10n->get('PLG_KATEGORIEREPORT_DEINSTALLATION'), $html, array('helpTextIdInline' => 'PLG_KATEGORIEREPORT_DEINSTALLATION_DESC'));
