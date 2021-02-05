@@ -210,7 +210,7 @@ switch ($getMode)
 
 		$pPreferences->save();
 
-		$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php'));
+		$gMessage->setForwardUrl(SecurityUtils::encodeUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/preferences.php', array('show_option' => 'options')));
 		$gMessage->show($gL10n->get('PLG_KATEGORIEREPORT_IMPORT_SUCCESS'));
 		
    		break;

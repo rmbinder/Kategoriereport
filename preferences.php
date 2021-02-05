@@ -3,7 +3,7 @@
  ***********************************************************************************************
  * Modul Preferences (Einstellungen) fuer das Admidio-Plugin Kategoriereport
  *
- * @copyright 2004-2020 The Admidio Team
+ * @copyright 2004-2021 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  *
@@ -14,6 +14,7 @@
  *
  * add_delete : -1 - Erzeugen einer Konfiguration
  * 				>0 - Löschen einer Konfiguration
+ * show_option: direktes Öffnen eines Panels des Accordeon-Menüs
  *
  ***********************************************************************************************
  */
@@ -32,6 +33,7 @@ if (!$gCurrentUser->isAdministrator())
 
 // Initialize and check the parameters
 $getAddDelete = admFuncVariableIsValid($_GET, 'add_delete', 'numeric', array('defaultValue' => 0));
+$showOption   = admFuncVariableIsValid($_GET, 'show_option', 'string');
 
 $pPreferences = new ConfigTablePKR();
 $pPreferences->read();
@@ -62,23 +64,26 @@ $pPreferences->save();
 
 $report = new GenReport();
 
-// if html mode and last url was not a list view then save this url to navigation stack
-if ( !StringUtils::strContains($gNavigation->getUrl(), 'preferences.php'))
+if ($getAddDelete)
 {
-    $gNavigation->addUrl(CURRENT_URL);
+    $showOption = 'configurations';
 }
+
+$gNavigation->clear();
+$gNavigation->addUrl(ADMIDIO_URL . FOLDER_PLUGINS . PLUGIN_FOLDER .'/kategoriereport.php');
+$gNavigation->addUrl(CURRENT_URL);
 
 // create html page object
 $page = new HtmlPage('plg-kategoriereport-preferences', $headline);
 
 // open the module configurations if a new configuration is added or deleted
-if ($getAddDelete <> 0)
+if ($showOption <> '')
 {
     $page->addJavascript('
         $("#tabs_nav_common").attr("class", "nav-link active");
         $("#tabs-common").attr("class", "tab-pane fade show active");
-        $("#collapse_configurations").attr("class", "collapse show");
-        location.hash = "#" + "panel_configurations";',
+        $("#collapse_'.$showOption.'").attr("class", "collapse show");
+        location.hash = "#" + "panel_'.$showOption.'";',
         true
     );
 }
