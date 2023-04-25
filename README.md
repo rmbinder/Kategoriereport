@@ -9,3 +9,7 @@ Eine Online-Dokumentation gibt es hier: https://www.admidio.org/dokuwiki/doku.ph
 ## Änderungshistorie
 
 In der [Änderungshistorie](https://www.admidio.org/dokuwiki/doku.php?id=de:plugins:kategoriereport#aenderungshistorie) gibt es detaillierte Informationen über die Fehlerbehebungen und Verbesserungen in jeder Version.
+
+
+## IMPORTANT
+Kategoriereport (Category report) has been an integral part of Admidio since Admidio 4.1. This repository will therefore not be developed further.
